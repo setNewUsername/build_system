@@ -1,0 +1,13 @@
+import 'package:flutter/material.dart';
+import 'package:<proj_name>/interfaces/module_interfaces/module_interface.dart';
+
+class AppBarHeader extends ModuleInterface{
+  const AppBarHeader();
+
+  @override
+  PreferredSizeWidget createWidget(BuildContext context){
+    return AppBar(
+      title: const Text('Hello test appbar'),
+    );
+  }
+}

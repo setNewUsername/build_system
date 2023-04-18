@@ -1,0 +1,18 @@
+import 'package:flutter/material.dart';
+import 'dart:developer' as dev;
+
+class TapableSimpleTile extends StatelessWidget{
+  const TapableSimpleTile({super.key});
+
+  @override
+  Widget build(BuildContext context){
+    return InkWell(
+      child: Container(
+        color: Colors.green,
+      ),
+      onTap: () {
+        dev.log('hello', name: 'test_log');
+      },
+    );
+  }
+}

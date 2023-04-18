@@ -1,0 +1,38 @@
+import 'package:flutter/material.dart';
+import 'package:<proj_name>/interfaces/module_interfaces/module_interface.dart';
+
+class ButtonsFooterModule extends ModuleInterface{
+  const ButtonsFooterModule();
+
+  @override
+  Widget createWidget(BuildContext context){
+    return Container(
+      color: Colors.green,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: const [
+          Expanded(child: Icon(
+              Icons.crop_square_sharp,
+              size: 50,
+            ),
+          ),
+          Expanded(child: Icon(
+              Icons.crop_square_sharp,
+              size: 50,
+            ),
+          ),
+          Expanded(child: Icon(
+              Icons.crop_square_sharp,
+              size: 50,
+            ),
+          ),
+          Expanded(child: Icon(
+              Icons.crop_square_sharp,
+              size: 50,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}

@@ -1,0 +1,57 @@
+{
+    "footer": {
+      "name": "ButtonsFooterModule",
+      "namePrivate": "buttons_footer",
+      "id": "41941",
+      "modules": [
+      ],
+      "options": {
+        
+      },
+      "keyWord": ""
+    },
+    "header": {
+      "name": "TitleButtonsAppBarHeader",
+      "namePrivate": "simple_header",
+      "id": "a1411",
+      "modules": [
+        
+      ],
+      "options": {
+      },
+      "keyWord": ""
+    },
+    "screens": [
+      {
+        "name": "MainScreen",
+        "namePrivate": "screen",
+        "id": "1445114",
+        "uncommonHeader": {},
+        "uncommonFooter": {},
+        "modules":{
+            "name": "ScrollBodyModule",
+            "namePrivate": "scroll_view_body",
+            "id": "a1411",
+            "modules": [
+                {
+                "name": "SimpleTileModule",
+                "namePrivate": "simple_grid_view_tile",
+                "options": {},
+                "keyWord": "<tile_module>",
+                "id": "CreateId()"
+                }
+            ],
+            "options": {
+                "crossAxisCount": 5,
+                "mainAxisSpacing": 15,
+                "crossAxisSpacing": 5
+            },
+            "keyWord": ""
+        },
+        "options": {
+          "keyWord": ""
+        }
+      }
+    ]
+  }
+  
