@@ -2,6 +2,10 @@ import sys, os, argparse
 from flashtext.keyword import KeywordProcessor
 from commons import *
 
+filePath = os.path.dirname(os.path.abspath(__file__))
+
+print(filePath)
+
 class ModuleModel:
     moduleName = ''
     role=''
@@ -71,9 +75,9 @@ class Builder:
 
     def __init__(self, projectName:str) -> None:
         self.projectName = projectName
-
-        self.parser.add_argument('--project-name', nargs='?', default='none')
-        self.namespace = self.parser.parse_args(sys.argv[1:])
+        if __file__ == 'builder.py':
+            self.parser.add_argument('--project-name', nargs='?', default='none')
+            self.namespace = self.parser.parse_args(sys.argv[1:])
 
         self.keyword_processor.add_keyword('<proj_name>', self.projectName)
         self.keyword_processor.add_keyword('<proj_title>', '\''+self.projectName+'\'')
@@ -121,17 +125,17 @@ class Builder:
 
         file = None
         if module.role == 'header':
-            file = open(f'../resources/modules_def_params/header_modules/{module.formatModuleFileName(defParams=False)}/{module.formatModuleFileName(defParams=False)}.module', 'r')
-            defParamsMap = self.readModuleDefParams(f'../resources/modules_def_params/header_modules/{module.formatModuleFileName(defParams=False)}/{module.formatModuleFileName(defParams=True)}.txt')
+            file = open(f'{filePath}/../resources/modules_def_params/header_modules/{module.formatModuleFileName(defParams=False)}/{module.formatModuleFileName(defParams=False)}.module', 'r')
+            defParamsMap = self.readModuleDefParams(f'{filePath}/../resources/modules_def_params/header_modules/{module.formatModuleFileName(defParams=False)}/{module.formatModuleFileName(defParams=True)}.txt')
         elif module.role == 'body':
-            file = open(f'../resources/modules_def_params/body_modules/{module.formatModuleFileName(defParams=False)}/{module.formatModuleFileName(defParams=False)}.module', 'r')
-            defParamsMap = self.readModuleDefParams(f'../resources/modules_def_params/body_modules/{module.formatModuleFileName(defParams=False)}/{module.formatModuleFileName(defParams=True)}.txt')
+            file = open(f'{filePath}/../resources/modules_def_params/body_modules/{module.formatModuleFileName(defParams=False)}/{module.formatModuleFileName(defParams=False)}.module', 'r')
+            defParamsMap = self.readModuleDefParams(f'{filePath}/../resources/modules_def_params/body_modules/{module.formatModuleFileName(defParams=False)}/{module.formatModuleFileName(defParams=True)}.txt')
         elif module.role == 'footer':
-            file = open(f'../resources/modules_def_params/footer_modules/{module.formatModuleFileName(defParams=False)}/{module.formatModuleFileName(defParams=False)}.module', 'r')
-            defParamsMap = self.readModuleDefParams(f'../resources/modules_def_params/footer_modules/{module.formatModuleFileName(defParams=False)}/{module.formatModuleFileName(defParams=True)}.txt')
+            file = open(f'{filePath}/../resources/modules_def_params/footer_modules/{module.formatModuleFileName(defParams=False)}/{module.formatModuleFileName(defParams=False)}.module', 'r')
+            defParamsMap = self.readModuleDefParams(f'{filePath}/../resources/modules_def_params/footer_modules/{module.formatModuleFileName(defParams=False)}/{module.formatModuleFileName(defParams=True)}.txt')
         elif module.role == 'controlls':
-            file = open(f'../resources/modules_def_params/controlls_modules/{module.formatModuleFileName(defParams=False)}/{module.formatModuleFileName(defParams=False)}.module', 'r')
-            defParamsMap = self.readModuleDefParams(f'../resources/modules_def_params/controlls_modules/{module.formatModuleFileName(defParams=False)}/{module.formatModuleFileName(defParams=True)}.txt')
+            file = open(f'{filePath}/../resources/modules_def_params/controlls_modules/{module.formatModuleFileName(defParams=False)}/{module.formatModuleFileName(defParams=False)}.module', 'r')
+            defParamsMap = self.readModuleDefParams(f'{filePath}/../resources/modules_def_params/controlls_modules/{module.formatModuleFileName(defParams=False)}/{module.formatModuleFileName(defParams=True)}.txt')
         else:
             pass
 
@@ -143,7 +147,7 @@ class Builder:
 
         self.addMapToKWProcessor(comparedMap)
 
-        output = open(getModulesPath(self.projectName)+f'/{module.formatModuleFileName(defParams=False)}.dart', 'w')
+        output = open(f'{filePath}/'+getModulesPath(self.projectName)+f'/{module.formatModuleFileName(defParams=False)}.dart', 'w')
 
         for line in importLinesBuffer:
             output.writelines(self.keyword_processor.replace_keywords(line))
@@ -158,8 +162,8 @@ class Builder:
         output.close()
 
     def createScreen(self, screen:ScreenModel):
-        file = open('../resources/screen.templ', 'r')
-        output = open(getScreensPath(self.projectName) + f'/{screen.formatScreenFileName()}.dart', 'w')
+        file = open(f'{filePath}/../resources/screen.templ', 'r')
+        output = open(f'{filePath}/'+getScreensPath(self.projectName) + f'/{screen.formatScreenFileName()}.dart', 'w')
 
         if screen.header != None:
             self.keyword_processor.add_keyword('<header_import>', screen.header.getImportLine(self.projectName))
@@ -199,8 +203,8 @@ class Builder:
 
     def prepProject(self):
         #create main.dart file
-        file = open('../resources/main.templ', 'r')
-        output = open(projectsPath+self.projectName+'/lib/main.dart', 'w')
+        file = open(f'{filePath}/../resources/main.templ', 'r')
+        output = open(f'{filePath}/{projectsPath}{self.projectName}/lib/main.dart', 'w')
         for line in file:
             output.writelines(self.keyword_processor.replace_keywords(line))
         file.close()
@@ -208,19 +212,19 @@ class Builder:
         #create main.dart file
 
         #create empty dirs
-        os.mkdir(getScreensPath(self.projectName))
-        os.mkdir(getModulesPath(self.projectName))
-        os.mkdir(getInterfacesPath(self.projectName))
-        os.mkdir(getInterfacesPath(self.projectName)+'/module_interfaces')
-        os.mkdir(getInterfacesPath(self.projectName)+'/screen_interfaces')
+        os.mkdir(f'{filePath}/' + getScreensPath(self.projectName))
+        os.mkdir(f'{filePath}/' + getModulesPath(self.projectName))
+        os.mkdir(f'{filePath}/' + getInterfacesPath(self.projectName))
+        os.mkdir(f'{filePath}/' + getInterfacesPath(self.projectName)+'/module_interfaces')
+        os.mkdir(f'{filePath}/' + getInterfacesPath(self.projectName)+'/screen_interfaces')
         #create empty dirs
 
         #place interfaces
         for dir in ['module_interfaces', 'screen_interfaces']:
-            for root, dirs, files in os.walk(f"../resources/interfaces/{dir}"):  
+            for root, dirs, files in os.walk(f"{filePath}/../resources/interfaces/{dir}"):  
                 for filename in files:
-                    file = open(f'../resources/interfaces/{dir}/{filename}', 'r')
-                    output = open(getInterfacesPath(self.projectName)+f'/{dir}/{filename.removesuffix(".templ")+".dart"}', 'w')
+                    file = open(f'{filePath}/../resources/interfaces/{dir}/{filename}', 'r')
+                    output = open(f'{filePath}/' + getInterfacesPath(self.projectName)+f'/{dir}/{filename.removesuffix(".templ")+".dart"}', 'w')
                     for line in file:
                         output.writelines(line)
                     file.close()

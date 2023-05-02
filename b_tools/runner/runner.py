@@ -1,11 +1,13 @@
 import json, sys, os, psycopg2
 from psycopg2 import Error
 
-sys.path.insert(0, '../builder/')
+sys.path.insert(0, 'build_system/b_tools/builder/')
 
 from commons import *
 from builder import *
 from p_builder import *
+
+filePath = os.path.dirname(os.path.abspath(__file__))
 
 class Runner:
     objects = {}
@@ -14,26 +16,30 @@ class Runner:
         self.cursor = DBconnection.cursor()
 
     def checkProjectCreated(self, projName:str) -> bool:
-        return os.path.exists(projectsPath + projName)
+        return os.path.exists(f'{filePath}/' + projectsPath + projName)
 
     def runBuild(self, projName:str):
         builder = Builder(projName)
 
         layout = self.getLayout(projName)
 
-        if layout != None:
-            self.createObjects(layout)
+        try:
+            if layout != None:
+                self.createObjects(layout)
 
-            if not self.checkProjectCreated(projName):
-                if createProject(projName, projectsPath) == 0:
-                    os.remove(projectsPath+projName+'/lib/main.dart')
-                    shutil.rmtree(projectsPath+projName+'/test')
-                builder.prepProject()
-            for objKey in self.objects.keys():
-                if 'screen' in objKey:
-                    builder.createScreen(self.objects[objKey])
-                else:
-                    builder.createModule(self.objects[objKey])
+                if not self.checkProjectCreated(projName):
+                    if createProject(projName, f'{filePath}/' + projectsPath) == 0:
+                        os.remove(f'{filePath}/' + projectsPath + projName + '/lib/main.dart')
+                        shutil.rmtree(f'{filePath}/'+ projectsPath + projName+'/test')
+                    builder.prepProject()
+                for objKey in self.objects.keys():
+                    if 'screen' in objKey:
+                        builder.createScreen(self.objects[objKey])
+                    else:
+                        builder.createModule(self.objects[objKey])
+        except:
+            return False
+        return True
 
     def getLayout(self, projName:str):
         postgreSQL_select_Query = f"select * from projects where uid='{projName}'"
@@ -87,22 +93,22 @@ class Runner:
             self.objects['screen'+str(i)] = screen[0]
             self.objects['body'+str(i)] = screen[1]
 
-name = "test_json"
+def start(name:str):
+    try:
+        connection = psycopg2.connect(user="psql_test_user",
+                                    password="root",
+                                    host="192.168.0.106",
+                                    port="5432",
+                                    database="frank")
+        
+    except (Exception, Error) as error:
+        print("Ошибка при работе с PostgreSQL", error)
+    finally:
+        if connection:
+            run = Runner(connection)
+            
+            if(run.runBuild(name)):
+                pass
 
-try:
-    connection = psycopg2.connect(user="psql_test_user",
-                                  password="root",
-                                  host="192.168.0.106",
-                                  port="5432",
-                                  database="frank")
-    
-except (Exception, Error) as error:
-    print("Ошибка при работе с PostgreSQL", error)
-finally:
-    if connection:
-        run = Runner(connection)
-
-        run.runBuild(name)
-
-        connection.close()
-        print("Соединение с PostgreSQL закрыто")
+            connection.close()
+            print("Соединение с PostgreSQL закрыто")
