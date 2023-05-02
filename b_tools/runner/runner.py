@@ -37,6 +37,8 @@ class Runner:
                         builder.createScreen(self.objects[objKey])
                     else:
                         builder.createModule(self.objects[objKey])
+                
+                os.system(f'cd {filePath}/../../projects/{projName} && flutter build apk')
         except:
             return False
         return True
@@ -107,8 +109,7 @@ def start(name:str):
         if connection:
             run = Runner(connection)
             
-            if(run.runBuild(name)):
-                pass
+            run.runBuild(name)
 
             connection.close()
             print("Соединение с PostgreSQL закрыто")

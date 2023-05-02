@@ -46,7 +46,7 @@ class Builder(BaseHTTPRequestHandler):
 
     def startBuild(self, projectName):
         start(projectName)
-        self.machineFree = True
+        self.stopper.machineFree = True
         print('----build successefull----')
 
     def getData(self, data:str) -> int:
