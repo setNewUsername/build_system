@@ -40,6 +40,9 @@ class Runner:
                 
                 if os.name == 'posix':
                     os.system(f'cd {filePath}/../../projects/ && cp -r {projName} ~/flutter_tmp && cd ~/flutter_tmp/{projName} && flutter build apk')
+                    os.system(f'mkdir {filePath}/../../outputs/{projName}')
+                    os.system(f'~/flutter_tmp/{projName}/build/app/outputs/ && mv app-release.apk {filePath}/../../outputs/{projName}')
+                    os.system(f'rm -r ~/flutter_tmp/{projName}')
                 else:
                     os.system(f'cd {filePath}/../../projects/{projName} && flutter build apk')
         except:
@@ -102,7 +105,7 @@ def start(name:str):
     try:
         connection = psycopg2.connect(user="psql_test_user",
                                     password="root",
-                                    host="192.168.0.106",
+                                    host="192.168.0.107",
                                     port="5432",
                                     database="frank")
         
