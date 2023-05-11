@@ -52,7 +52,7 @@ class Coordinator(BaseHTTPRequestHandler):
         noCollision:bool = True
         for i in range(len(self.buildHosts)):
             if hostAddress == self.buildHosts[i].address:
-                if hostPort != self.buildHosts[i][1]:
+                if hostPort != self.buildHosts[i].port:
                     self.buildHosts[i].port = hostPort
                 noCollision = False
 
