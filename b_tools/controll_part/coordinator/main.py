@@ -49,7 +49,8 @@ class Coordinator(BaseHTTPRequestHandler):
     buildHosts:list = []
 
     def addBuildHost(self, hostAddress, hostPort):
-        self.buildHosts.append(BuildHost(hostAddress, hostPort))
+        if not BuildHost(hostAddress, hostPort) in self.buildHosts:
+            self.buildHosts.append(BuildHost(hostAddress, hostPort))
         print(f'build hosts amount: {len(self.buildHosts)}')
 
     def removeBuildHost(self, hostAddress, hostPort):
