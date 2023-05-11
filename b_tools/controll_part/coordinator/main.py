@@ -54,7 +54,7 @@ class Coordinator(BaseHTTPRequestHandler):
             if hostAddress == self.buildHosts[i].address:
                 if hostPort != self.buildHosts[i][1]:
                     self.buildHosts[i].port = hostPort
-                collision = False
+                noCollision = False
 
         if noCollision:
             self.buildHosts.append(BuildHost(hostAddress, hostPort))
