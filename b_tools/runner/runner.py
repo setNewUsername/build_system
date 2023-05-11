@@ -38,7 +38,10 @@ class Runner:
                     else:
                         builder.createModule(self.objects[objKey])
                 
-                os.system(f'cd {filePath}/../../projects/{projName} && flutter build apk')
+                if os.name == 'posix':
+                    os.system(f'cd {filePath}/../../projects/ && cp -r {projName} ~/flutter_tmp && cd ~/flutter_tmp/{projName} && flutter build apk')
+                else:
+                    os.system(f'cd {filePath}/../../projects/{projName} && flutter build apk')
         except:
             return False
         return True
