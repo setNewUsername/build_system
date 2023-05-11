@@ -40,7 +40,8 @@ class Runner:
                 
                 if os.name == 'posix':
                     os.system(f'cd {filePath}/../../projects/ && cp -r {projName} ~/flutter_tmp && cd ~/flutter_tmp/{projName} && flutter build apk')
-                    os.system(f'mkdir {filePath}/../../outputs/{projName}')
+                    if not os.path.exists(f'{filePath}/../../outputs/{projName}'):
+                        os.system(f'mkdir {filePath}/../../outputs/{projName}')
                     os.system(f'mv ~/flutter_tmp/{projName}/build/app/outputs/apk/release/app-release.apk {filePath}/../../outputs/{projName}')
                     os.system(f'rm -r ~/flutter_tmp/{projName}')
                 else:
