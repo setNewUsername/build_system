@@ -62,13 +62,13 @@ class Coordinator(BaseHTTPRequestHandler):
     def addBuildHost(self, hostAddress, hostPort):
         noCollision:bool = True
         #uncomment
-        '''
+
         for i in range(len(self.buildHosts)):
             if hostAddress == self.buildHosts[i].address:
                 if hostPort != self.buildHosts[i].port:
                     self.buildHosts[i].port = hostPort
                 noCollision = False
-        '''
+
         if noCollision:
             newHost = BuildHost(hostAddress, hostPort)
             self.buildHosts.append(newHost)
