@@ -47,6 +47,11 @@ class Builder(BaseHTTPRequestHandler):
     def startBuild(self, projectName):
         start(projectName)
         self.stopper.machineFree = True
+        answer = requests.post(f'http://{namespace.coordinatorip}:{namespace.coordinatorport}', data=json.dumps({
+            'purpose': 'build_finished',
+            'build_host_ip': namespace.serverip,
+            'build_host_port': namespace.serverport
+        }))
         print('----build successefull----')
 
     def getData(self, data:str) -> int:
@@ -58,6 +63,11 @@ class Builder(BaseHTTPRequestHandler):
                 print('start build')
                 thread = threading.Thread(target=self.startBuild, args=(options['project_name'],))
                 thread.start()
+                return 200
+            else:
+                return 503
+        elif(options['purpose'] == 'check'):
+            if self.stopper.machineFree:
                 return 200
             else:
                 return 503
