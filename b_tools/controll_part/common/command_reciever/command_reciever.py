@@ -1,8 +1,10 @@
+import json, sys, os
+sys.path.append(f'{os.path.dirname(os.path.abspath(__file__))}\\')
+
 from http.server import BaseHTTPRequestHandler
 from http.server import HTTPServer
 from response_handler import *
 from base_purpose_handler import BasePurposeHandler
-import json, threading
 
 '''
 101 - no purpose field
@@ -88,16 +90,16 @@ class CustomHTTPServer(HTTPServer):
         self.serverCloseFunc()
         return super().server_close()
 
-class StartBuildPurpose(BasePurposeHandler):
-
-    def __init__(self, reqFields: list) -> None:
-        super().__init__('start_build', reqFields, True)
-
-    def purposeProcess(self, jsonData):
-        print(jsonData)
-        return 202
-
 if __file__ == 'commad_reciever':
+
+    class StartBuildPurpose(BasePurposeHandler):
+        def __init__(self, reqFields: list) -> None:
+            super().__init__('start_build', reqFields, True)
+
+        def purposeProcess(self, jsonData):
+            print(jsonData)
+            return 202
+
     strH = StartBuildPurpose(['project_name'])
 
     reqVal = RequestValidator(['192.168.0.107'], purposeHandlers=[strH])
