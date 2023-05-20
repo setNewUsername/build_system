@@ -64,7 +64,7 @@ class Runner:
         self.cursor.close()
 
         for row in project:
-            return row[2]
+            return row[5]
 
     def createScreen(self, header:ModuleModel, footer:ModuleModel, rawScreenData) -> list:
 

@@ -4,8 +4,6 @@ from commons import *
 
 filePath = os.path.dirname(os.path.abspath(__file__))
 
-print(filePath)
-
 class ModuleModel:
     moduleName = ''
     role=''
