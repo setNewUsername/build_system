@@ -97,23 +97,24 @@ class StartBuildPurpose(BasePurposeHandler):
         print(jsonData)
         return 202
 
-strH = StartBuildPurpose(['project_name'])
+if __file__ == 'commad_reciever':
+    strH = StartBuildPurpose(['project_name'])
 
-reqVal = RequestValidator(['192.168.0.107'], purposeHandlers=[strH])
+    reqVal = RequestValidator(['192.168.0.107'], purposeHandlers=[strH])
 
-resHad = ResponseHandler(reqVal)
+    resHad = ResponseHandler(reqVal)
 
-def startServerFunc():
-    print('Server started')
+    def startServerFunc():
+        print('Server started')
 
-def closeServerFunc():
-    print('Server stopped')
+    def closeServerFunc():
+        print('Server stopped')
 
-CustomRequestHandler.responseHandler = resHad
+    CustomRequestHandler.responseHandler = resHad
 
-httpd = CustomHTTPServer('192.168.0.104', 8000, CustomRequestHandler, sForeverF=startServerFunc, sCloseF=closeServerFunc)
+    httpd = CustomHTTPServer('192.168.0.104', 8000, CustomRequestHandler, sForeverF=startServerFunc, sCloseF=closeServerFunc)
 
-try:
-    httpd.serve_forever()
-except KeyboardInterrupt:
-    httpd.server_close()
+    try:
+        httpd.serve_forever()
+    except KeyboardInterrupt:
+        httpd.server_close()
