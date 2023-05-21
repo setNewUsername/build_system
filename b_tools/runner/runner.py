@@ -1,11 +1,14 @@
 import json, sys, os, psycopg2
 from psycopg2 import Error
 
-sys.path.insert(0, 'build_system/b_tools/builder/')
+#b_tools path
+sys.path.append(f'{os.path.dirname(os.path.abspath(__file__))}\..\..\\')
+#builder path
+sys.path.append(f'{os.path.dirname(os.path.abspath(__file__))}\..\..\\builder\\')
 
-from commons import *
-from builder import *
-from p_builder import *
+from b_tools.builder.builder import *
+from b_tools.builder.p_builder import *
+from b_tools.builder.commons import *
 
 filePath = os.path.dirname(os.path.abspath(__file__))
 

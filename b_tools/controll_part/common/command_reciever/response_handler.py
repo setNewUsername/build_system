@@ -19,6 +19,7 @@ from err_succ_handlers import ErrorHandler, SuccessHandler, errHandler, succHand
 206 - build machines amount checked
 207 - machine registered
 208 - machine unregistered
+209 - project remove from queue
 '''
 
 '''
@@ -56,23 +57,26 @@ class ResponseHandler:
     def addInnerCodeToHttp(self, innerCode, httpCode) -> int:
         self.innerCodesToHttpCodes[innerCode] = httpCode
 
-    def packMessageToWrapper(self, innerCode) -> ResponseWrapper:
+    def packMessageToWrapper(self, innerCode, messageData) -> ResponseWrapper:
         message = {}
         if not innerCode in self.innerCodesToHttpCodes.keys():
             return ResponseWrapper(200, {'message':'unhandled error'})
         if innerCode < 200:
             message['message'] = self.errorHandler.processError(innerCode)
+            message['message_data'] = messageData
         elif innerCode < 300:
             message['message'] = self.successHandler.processSuccess(innerCode)
+            message['message_data'] = messageData
 
         return ResponseWrapper(self.innerCodesToHttpCodes[innerCode], message)
     
     def processRequest(self, requesterIpAdress, jsonData) -> ResponseWrapper:
         valIpCode = self.requiestVal.validateIp(requesterIpAdress)
         if valIpCode == 1:
-            return self.packMessageToWrapper(self.requiestVal.validatePurpose(jsonData))
+            data = self.requiestVal.validatePurpose(jsonData)
+            return self.packMessageToWrapper(data[0], data[1])
         else:
-            return self.packMessageToWrapper(valIpCode)
+            return self.packMessageToWrapper(valIpCode, '')
 
 ResponseHandler.errorHandler = errHandler
 ResponseHandler.successHandler = succHandler
@@ -87,6 +91,7 @@ ResponseHandler.innerCodesToHttpCodes = {
     206: 200,
     207: 200,
     208: 200,
+    209: 200,
     #succ messages codes
     100: 200,
     101: 200,
@@ -96,4 +101,3 @@ ResponseHandler.innerCodesToHttpCodes = {
     105: 200,
     106: 200
 }
-

@@ -35,6 +35,7 @@ succHandler.addMesageInList(205, 'project files removed')
 succHandler.addMesageInList(206, 'build machines amount checked')
 succHandler.addMesageInList(207, 'machine registered')
 succHandler.addMesageInList(208, 'machine unregistered')
+succHandler.addMesageInList(209, 'project remove from queue')
 
 errHandler = ErrorHandler()
 errHandler.addMesageInList(100, 'unhandler error')

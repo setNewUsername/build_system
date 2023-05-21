@@ -1,9 +1,11 @@
+from base_purpose_handler import BasePurposeHandler
+
 class RequestValidator:
-    purposeHandlers:list = None
+    purposeHandlers:list[BasePurposeHandler] = None
     requesIpWhiteList:list = None
     purposeList:list = None
 
-    def __init__(self, reqIpWhiteList, purposeHandlers:list = None) -> None:
+    def __init__(self, reqIpWhiteList, purposeHandlers:list[BasePurposeHandler] = None) -> None:
         self.purposeHandlers = purposeHandlers
         self.requesIpWhiteList = reqIpWhiteList
         self.purposeList = []
@@ -21,10 +23,10 @@ class RequestValidator:
     def addPurposeHandlers(self, newPurposeHanlder) -> None:
         self.purposeHandlers.append(newPurposeHanlder)
 
-    def validatePurpose(self, jsonData) -> int:
+    def validatePurpose(self, jsonData) -> tuple:
         if self.purposeHandlers == None or len(self.purposeHandlers) == 0:
             print ('Purpose handlers is None')
-            return 105
+            return (105, '')
         
         if 'purpose' in jsonData.keys():
             curPurpose = jsonData['purpose']
@@ -34,6 +36,6 @@ class RequestValidator:
                     if curPurpose == handler.purposeName:
                         return handler.validatePurposeFields(jsonData)
             else:
-                return 102
+                return (102, '')
         else:
-            return 101
+            return (101, '')

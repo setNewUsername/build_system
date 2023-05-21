@@ -15,7 +15,7 @@ class BasePurposeHandler:
 
         for reqField in self.purposeRequiredFields:
             if not reqField in curFields:
-                return 103
+                return (103, '')
         if not self.blocking:
             newPurposeProcessThread = threading.Thread(target=self.purposeProcess, args=(jsonData,))
             newPurposeProcessThread.start()
@@ -23,5 +23,5 @@ class BasePurposeHandler:
             return self.purposeProcess(jsonData)
         return 1
 
-    def purposeProcess(self, jsonData):
+    def purposeProcess(self, jsonData) -> tuple:
         print('No purposeProcess realisation')
