@@ -1,6 +1,40 @@
 from request_validator import RequestValidator 
 from err_succ_handlers import ErrorHandler, SuccessHandler, errHandler, succHandler
 
+
+'''
+100 - unhandled error
+101 - no purpose field
+102 - not supported purpose
+103 - purpose wrong data
+104 - host not in white list
+105 - no purpose handlers
+106 - project already marked as candidate to remove from build queue
+
+201 - request completed
+202 - build started
+203 - build stopped
+204 - build planned
+205 - project files removed
+206 - build machines amount checked
+207 - machine registered
+208 - machine unregistered
+'''
+
+'''
+outer purposes:
+start_build
+stop_build
+plan_build
+remove_project_files
+remove_user_projects
+check_build_machines_amount
+
+inner purposes:
+register_machine
+unregister_machine
+'''
+
 class ResponseWrapper:
     httpResponseCode = None
     jsonResponseData = None
@@ -24,6 +58,8 @@ class ResponseHandler:
 
     def packMessageToWrapper(self, innerCode) -> ResponseWrapper:
         message = {}
+        if not innerCode in self.innerCodesToHttpCodes.keys():
+            return ResponseWrapper(200, {'message':'unhandled error'})
         if innerCode < 200:
             message['message'] = self.errorHandler.processError(innerCode)
         elif innerCode < 300:
@@ -52,10 +88,12 @@ ResponseHandler.innerCodesToHttpCodes = {
     207: 200,
     208: 200,
     #succ messages codes
+    100: 200,
     101: 200,
     102: 200,
     103: 200,
     104: 200,
-    105: 200
+    105: 200,
+    106: 200
 }
 

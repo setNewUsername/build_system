@@ -6,37 +6,6 @@ from http.server import HTTPServer
 from response_handler import *
 from base_purpose_handler import BasePurposeHandler
 
-'''
-101 - no purpose field
-102 - not supported purpose
-103 - purpose wrong data
-104 - host not in white list
-105 - no purpose handlers
-
-201 - request completed
-202 - build started
-203 - build stopped
-204 - build planned
-205 - project files removed
-206 - build machines amount checked
-207 - machine registered
-208 - machine unregistered
-'''
-
-'''
-outer purposes:
-start_build
-stop_build
-plan_build
-remove_project_files
-remove_user_projects
-check_build_machines_amount
-
-inner purposes:
-register_machine
-unregister_machine
-'''
-
 class CustomRequestHandler(BaseHTTPRequestHandler):
     responseHandler:ResponseHandler = None
 
