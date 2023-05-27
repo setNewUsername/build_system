@@ -42,3 +42,13 @@ class UnRegisterMachinePurpose(CR.BasePurposeHandler):
 
     def purposeProcess(self, jsonData):
         return self.unRegisterMachineFunction(jsonData['purpose_data']['machine_id'])
+    
+class BuildFinishedPurpose(CR.BasePurposeHandler):
+    buildFinishedFunc = None
+
+    def __init__(self, reqFields: list, buildFinFunc) -> None:
+        super().__init__('build_finished', reqFields, True)
+        self.buildFinishedFunc = buildFinFunc
+
+    def purposeProcess(self, jsonData):
+        return self.buildFinishedFunc(jsonData['purpose_data']['machine_id'])

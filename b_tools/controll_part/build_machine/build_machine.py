@@ -65,7 +65,6 @@ class BuildMachine:
 
     def startBuild(self, projectId):
         if self.machineIsFree:
-            print('start build')
             self.machineIsFree = False
             thread = threading.Thread(target=self.startBuildThread, args=(projectId,))
             thread.start()
@@ -76,14 +75,14 @@ class BuildMachine:
     def startBuildThread(self, projectId):
         #start function is in runner.py file
         buildSuccess = start(projectId)
+        print('Build finished')
         buildSuccess = True
         self.machineIsFree = True
         if buildSuccess:
             self.sendRequestToCoordinator({
                     'purpose': 'build_finished',
                     'purpose_data':{
-                        'build_host_ip': self.machineAdress,
-                        'build_host_port': self.machinePort
+                        'machine_id': f'{self.machineId}',
                     }
                 })
         else:

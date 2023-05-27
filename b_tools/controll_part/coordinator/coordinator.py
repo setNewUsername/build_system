@@ -86,6 +86,10 @@ class Coordinator:
         prjLoopThread = threading.Thread(target=self.projectsLoop, args=())
         prjLoopThread.start()
 
+    def buildFinished(self, machineId):
+        self.buildMachines[machineId].machineFree = True
+        return (202, '')
+
     def projectsLoop(self):
         while self.coordinatorAlive:
             if not self.projectQueue.empty():
@@ -100,7 +104,7 @@ class Coordinator:
                                 self.processBuildMachineResponse(self.sendMessageToBuildMachine(buildMachineId, {
                                     'purpose': 'start_build',
                                     'purpose_data':{
-                                        'project_id': 'test_json'
+                                        'project_id': projectIdToStart
                                     }
                                 }))
 
@@ -111,9 +115,10 @@ startPHandler = StartBuildPurpose(['project_id'], coordinator.addProjectToQueue)
 removePHandler = RemoveProjectFromQueuePurpose(['project_id'], coordinator.markProjectForRemove)
 registerPHandler = RegisterMachinePurpose(['build_host_ip', 'build_host_port'], coordinator.addBuildMachine)
 unRegisterPHandler = UnRegisterMachinePurpose(['machine_id'], coordinator.removeBuildMachine)
+buildFinPHandler = BuildFinishedPurpose(['machine_id'], coordinator.buildFinished)
 #purpose hanclders setup
 
-reqVal = CR.RequestValidator(['192.168.0.107', '192.168.0.104'], purposeHandlers=[startPHandler, removePHandler, registerPHandler, unRegisterPHandler])
+reqVal = CR.RequestValidator(['192.168.0.107', '192.168.0.104'], purposeHandlers=[startPHandler, removePHandler, registerPHandler, unRegisterPHandler, buildFinPHandler])
 
 resHad = CR.ResponseHandler(reqVal)
 
