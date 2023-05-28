@@ -1,0 +1,9 @@
+Container(
+    padding: const EdgeInsets.only(<text_padding>),
+    margin: const EdgeInsets.only(<text_margin>),
+    alignment: <text_alignment>,
+    child: const Text(<text>,
+        style: TextStyle(
+            fontSize: <text_font_size>
+        ),),
+)

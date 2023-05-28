@@ -1,0 +1,24 @@
+import 'package:flutter/material.dart';
+
+import 'package:test/controls/screen_navigator.dart';
+import 'package:test/commons/root_widget.dart';
+import 'package:test/controls/screen_handler.dart';
+
+void main() => runApp(ScreenRootInheritedWidget(scrnNav: ScreenNavigator(), child: const MyApp()));
+
+class MyApp extends StatelessWidget{
+  static ScreenHandler scrHand = const ScreenHandler();
+
+  const MyApp({super.key});
+
+  @override
+  Widget build(BuildContext context){
+    
+    <add_screens>
+
+    return MaterialApp(
+      title: 'Test app',
+      home: ScreenRootInheritedWidget.of(context).scrnNav.getStartScreen(),
+    );
+  }
+}

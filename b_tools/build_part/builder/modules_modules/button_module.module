@@ -1,0 +1,29 @@
+Container(
+    height: <button_height>,
+    width: <button_width>,
+    margin: const EdgeInsets.only(<button_margin>),
+    child: ElevatedButton(
+    onPressed: (){
+        <press_function>
+    },
+    style: ButtonStyle(
+        backgroundColor: MaterialStateProperty.all(Color(
+            <background_color>
+        )),
+        side: MaterialStateProperty.all(const BorderSide(color: Color(
+            <border_color>
+        )))
+    ),
+    child: Container(
+        alignment: <button_text_aligment>,
+        child: const Text(
+            <button_text>,
+            style: TextStyle(
+                color: Color(
+                    <button_text_color>
+                ), 
+                fontSize: <font_size>
+            ))
+        )
+    ),
+)

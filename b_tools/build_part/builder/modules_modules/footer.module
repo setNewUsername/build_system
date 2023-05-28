@@ -1,0 +1,36 @@
+import 'package:flutter/material.dart';
+import 'package:test/commons/root_widget.dart';
+
+class <module_id> extends StatelessWidget{
+  final String footerParentScreenId; 
+
+  const <module_id>({super.key, required this.footerParentScreenId});
+
+  void leedToScreen(context, scrId){
+    if(footerParentScreenId != scrId){
+        Widget? newScr = ScreenRootInheritedWidget.of(context).scrnNav.getScreen(scrId);
+        if(newScr != null){
+          Navigator.push(
+            context,
+          MaterialPageRoute(builder: (context) => newScr),
+        );
+      }
+    }
+  }
+
+  @override
+  Widget build(BuildContext context){
+    return Container(
+      height: <footer_height>,
+      padding: const EdgeInsets.only(<footer_padding>),
+      margin: const EdgeInsets.only(<footer_margin>),
+      color: Color(<footer_background_color>),
+      child: Row(
+        mainAxisAlignment: <children_spacing>,
+        children: [
+            <children_lines>
+        ],
+      ),
+    );
+  }
+}

@@ -1,0 +1,20 @@
+import 'package:flutter/material.dart';
+
+import 'package:test/modules_by_screens/<screen_id>/<screen_body_id>.dart';
+import 'package:test/modules_by_screens/<screen_id>/<screen_header_id>.dart';
+import 'package:test/modules_by_screens/<screen_id>/<screen_footer_id>.dart';
+
+class <screen_id> extends StatelessWidget{
+  static String screenId = '<screen_id>';
+
+  const <screen_id>({super.key});
+
+  @override
+  Widget build(BuildContext context){
+    return Scaffold(
+      appBar: const <screen_header_id>(),
+      bottomNavigationBar: <screen_footer_id>(footerParentScreenId: screenId),
+      body: const <screen_body_id>()
+    );
+  }
+}

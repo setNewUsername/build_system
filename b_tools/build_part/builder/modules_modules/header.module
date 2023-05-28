@@ -1,0 +1,18 @@
+import 'package:flutter/material.dart';
+
+class <module_id> extends StatelessWidget implements PreferredSizeWidget{
+  const <module_id>({super.key});
+
+  @override 
+  final Size preferredSize = const Size.fromHeight(<header_height>); 
+
+  @override
+  Widget build(BuildContext context){
+    return AppBar(
+      title:
+      <children_lines>
+      backgroundColor: Color(<backgroud_header_color>),
+      foregroundColor: Color(<header_text_color>)
+    ); 
+  }
+}
