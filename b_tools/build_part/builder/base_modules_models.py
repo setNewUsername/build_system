@@ -79,11 +79,10 @@ class BaseModuleModel:
         print('addCssToDartOptionsMap method is not overrided')
 
     def writeDataToDartFile(self, path):
-        print(self.moduleDefParamsMap)
+        print(self.moduleFileLines)
         file = open(f'{path}/{self.moduleId}.dart', 'w')
         for lineIndex in range(len(self.moduleFileLines)):
             self.moduleFileLines[lineIndex] = self.keywordProcessor.replace_keywords(self.moduleFileLines[lineIndex])
-
         file.writelines(self.moduleFileLines)
         file.close()
 

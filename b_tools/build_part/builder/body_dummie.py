@@ -1,6 +1,6 @@
 from base_modules_models import *
 
-class BodyDummie(BaseModuleModel):
+class BodyDummie(BaseModuleWithChildren):
     def __init__(self, moduleId: str, jsonOptions) -> None:
         super().__init__(moduleId, 'body_dummie', jsonOptions)
 

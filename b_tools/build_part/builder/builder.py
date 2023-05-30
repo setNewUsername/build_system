@@ -7,6 +7,41 @@ from footer_modules import *
 from button_modules import *
 from header_modules import *
 from body_dummie import *
+from scroll_modules import *
+
+class ModuleFactory:
+
+    creationModuleMap:dict[str, any] = None
+
+    def __init__(self) -> None:
+        self.fillCreateMap()
+
+    def fillCreateMap(self):
+        self.creationModuleMap = {
+            'Wrapper': self.createWrapper,
+            'Button': self.createButton,
+            'Text': self.createText
+        }
+
+    def createButton(self, data) -> BaseModuleModel:
+        return ButtonModule(data['id'], data['options'])
+
+    def createWrapper(self, data) -> BaseModuleWithChildren:
+        if len(data['children']) > 0:
+            if data['scrollable'] == 'true':
+                bod = ScrollableWrapper(data['id'], data['options'])
+                bod.processChildren(ButtonModule(data['children'][0]['id'], data['children'][0]))
+                return bod
+            else:
+                pass
+        else:
+            return BodyDummie(data['id'], data['options'])
+
+    def createText(self, data) -> BaseModuleModel:
+        return TextModule(data['id'], data['options'])
+
+    def getModuleByName(self, moduleName, requiredData={}) -> BaseModuleModel:
+        return self.creationModuleMap[moduleName](requiredData)
 
 class Builder:
     projectFilesFolderPath:str = './test'
@@ -16,6 +51,8 @@ class Builder:
 
     jsonProjectData:dict = None
     screensAmount:int = None
+
+    moduleFactory: ModuleFactory = ModuleFactory()
 
     def __init__(self, jsonData) -> None:
         self.jsonProjectData = jsonData
@@ -33,7 +70,6 @@ class Builder:
         except:
             pass
         else:
-            print(res[0])
             res = res.replace(res[0], 'a', 1)
         if not bracelets:
             return res
@@ -60,7 +96,13 @@ class Builder:
         head = HeaderModule(self.transformId(headerData['id']), headerData['options'])
 
         for child in headerData['modules']:
-            head.addChild(TextModule(self.transformId(child['id']), child['options']))
+            head.addChild(
+                self.moduleFactory.getModuleByName(child['namePrivate'], requiredData={
+                    'id': self.transformId(child['id']),
+                    'options': child['options']
+                })
+            )
+            
 
         head.appendChildrenLines(',')
         head.processChildrenLines()
@@ -70,15 +112,25 @@ class Builder:
         foot = FooterModule(self.transformId(footerData['id']), footerData['options'])
 
         for child in footerData['modules']:
-            foot.addChild(ButtonModule(self.transformId(child['id']), child['options']))
+            foot.addChild(
+                self.moduleFactory.getModuleByName(child['namePrivate'], requiredData={
+                    'id': self.transformId(child['id']),
+                    'options': child['options']
+                })
+            )
 
         foot.appendChildrenLines(',')
         foot.processChildrenLines()
         foot.writeDataToDartFile(f'./test/modules_by_screens/{screenId}')
 
     def createScreenBody(self, bodyData, screenId):
-        body = BodyDummie(self.transformId(bodyData['id']), bodyData['options'])
-
+        body = self.moduleFactory.getModuleByName(bodyData['namePrivate'], requiredData={
+            'scrollable': 'true',#bodyData['scrollable'],
+            'id': self.transformId(bodyData['id']),
+            'children': bodyData['modules'],
+            'options': bodyData['options']
+        })
+        body.processChildrenLines()
         body.writeDataToDartFile(f'./test/modules_by_screens/{screenId}')
     #objects by screen
 
@@ -192,3 +244,8 @@ bui.createScreensModules()
 bui.createScreenHandler()
 bui.createScreenNavigator()
 bui.createMainFile()
+
+# bod = ScrollableWrapper('test_scroll', data['screens'][0]['modules'][0])
+# bod.processChildren(ButtonModule('fefwew', data['footer']['modules'][0]))
+# bod.processChildrenLines()
+# bod.writeDataToDartFile('./test/')
