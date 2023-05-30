@@ -23,8 +23,8 @@ class BaseModuleModel:
         #default clear data map
         self.moduleClearCssDataMap = {
             'backgroundColor': self.createDartHexColorFromCssColor,
-            'height': self.clearCssPx,
-            'width': self.clearCssPx,
+            'height': self.clearAutoHeight,
+            'width': self.clearAutoWidth,
             'fontSize': self.clearCssPx
         }
 
@@ -63,6 +63,18 @@ class BaseModuleModel:
     def createDartHexColorFromCssColor(self, cssColor:str):
         return '0xff'+cssColor.removeprefix('#')
 
+    def clearAutoWidth(self, CssWidth:str):
+        if CssWidth == 'auto':
+            return 'MediaQuery.of(context).size.width'
+        else:
+            return self.clearCssPx(CssWidth)
+
+    def clearAutoHeight(self, CssHeight:str):
+        if CssHeight == 'auto':
+            return 'MediaQuery.of(context).size.height'
+        else:
+            return self.clearCssPx(CssHeight)
+
     def clearCssPx(self, CssLength:str):
         return CssLength.removesuffix('px')
 
@@ -79,7 +91,7 @@ class BaseModuleModel:
         print('addCssToDartOptionsMap method is not overrided')
 
     def writeDataToDartFile(self, path):
-        print(self.moduleFileLines)
+        #print(self.moduleFileLines)
         file = open(f'{path}/{self.moduleId}.dart', 'w')
         for lineIndex in range(len(self.moduleFileLines)):
             self.moduleFileLines[lineIndex] = self.keywordProcessor.replace_keywords(self.moduleFileLines[lineIndex])

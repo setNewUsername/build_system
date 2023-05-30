@@ -8,6 +8,8 @@ from button_modules import *
 from header_modules import *
 from body_dummie import *
 from scroll_modules import *
+from wrapper_modules import *
+from tools.tools import *
 
 class ModuleFactory:
 
@@ -27,13 +29,24 @@ class ModuleFactory:
         return ButtonModule(data['id'], data['options'])
 
     def createWrapper(self, data) -> BaseModuleWithChildren:
+        print(data['scrollable'])
         if len(data['children']) > 0:
             if data['scrollable'] == 'true':
                 bod = ScrollableWrapper(data['id'], data['options'])
-                bod.processChildren(ButtonModule(data['children'][0]['id'], data['children'][0]))
+                bod.processChildren(self.getModuleByName(data['children'][0]['namePrivate'], requiredData={
+                    'id': transformId(data['children'][0]['id']),
+                    'options': data['children'][0]['options']
+                }))
                 return bod
-            else:
-                pass
+            if data['scrollable'] == 'false':
+                bod = NotScrollableWrapper(data['id'], data['options'])
+                for child in data['children']:
+                    bod.addChild(self.getModuleByName(child['namePrivate'], requiredData={
+                    'id': transformId(child['id']),
+                    'options': child['options']
+                }))
+                bod.processChildrenColumns()
+                return bod
         else:
             return BodyDummie(data['id'], data['options'])
 
@@ -63,28 +76,15 @@ class Builder:
         os.mkdir(f'{self.projectFilesFolderPath}/modules_by_screens')
         os.mkdir(f'{self.projectFilesFolderPath}/screens')
 
-    def transformId(self, idToTransform:str, bracelets:bool = False) -> str:
-        res = ''.join(idToTransform.split('-'))
-        try:
-            int(res[0])
-        except:
-            pass
-        else:
-            res = res.replace(res[0], 'a', 1)
-        if not bracelets:
-            return res
-        else:
-            return '"'+res+'"'
-
     #common objects
     def createCommonHeader(self):
         pass
 
     def createCommonFooter(self):
-        self.commonFooter = FooterModule(self.transformId(self.jsonProjectData['footer']['id']), self.jsonProjectData['footer']['options'])
+        self.commonFooter = FooterModule(transformId(self.jsonProjectData['footer']['id']), self.jsonProjectData['footer']['options'])
 
         for child in self.jsonProjectData['footer']['modules']:
-            self.commonFooter.addChild(ButtonModule(self.transformId(child['id']), child['options']))
+            self.commonFooter.addChild(ButtonModule(transformId(child['id']), child['options']))
 
         self.commonFooter.appendChildrenLines(',')
         self.commonFooter.processChildrenLines()
@@ -93,12 +93,12 @@ class Builder:
 
     #objects by screen
     def createScreenHeader(self, headerData, screenId):
-        head = HeaderModule(self.transformId(headerData['id']), headerData['options'])
+        head = HeaderModule(transformId(headerData['id']), headerData['options'])
 
         for child in headerData['modules']:
             head.addChild(
                 self.moduleFactory.getModuleByName(child['namePrivate'], requiredData={
-                    'id': self.transformId(child['id']),
+                    'id': transformId(child['id']),
                     'options': child['options']
                 })
             )
@@ -109,12 +109,12 @@ class Builder:
         head.writeDataToDartFile(f'./test/modules_by_screens/{screenId}')
 
     def createScreenFooter(self, footerData, screenId):
-        foot = FooterModule(self.transformId(footerData['id']), footerData['options'])
+        foot = FooterModule(transformId(footerData['id']), footerData['options'])
 
         for child in footerData['modules']:
             foot.addChild(
                 self.moduleFactory.getModuleByName(child['namePrivate'], requiredData={
-                    'id': self.transformId(child['id']),
+                    'id': transformId(child['id']),
                     'options': child['options']
                 })
             )
@@ -125,8 +125,8 @@ class Builder:
 
     def createScreenBody(self, bodyData, screenId):
         body = self.moduleFactory.getModuleByName(bodyData['namePrivate'], requiredData={
-            'scrollable': 'true',#bodyData['scrollable'],
-            'id': self.transformId(bodyData['id']),
+            'scrollable': bodyData['scrollable'],
+            'id': transformId(bodyData['id']),
             'children': bodyData['modules'],
             'options': bodyData['options']
         })
@@ -147,19 +147,19 @@ class Builder:
             else:
                 footerId = self.commonFooter.moduleId
             scr = ScreenModel(
-                self.transformId(screen['id']),
-                self.transformId(headerId),
-                self.transformId(screen['modules'][0]['id']),
-                self.transformId(footerId),
+                transformId(screen['id']),
+                transformId(headerId),
+                transformId(screen['modules'][0]['id']),
+                transformId(footerId),
                 'screen')
             scr.writeLinesToDart()
 
     def createScreensModules(self):
         for screen in self.jsonProjectData['screens']:
-            os.mkdir(f"./test/modules_by_screens/{self.transformId(screen['id'])}")
-            self.createScreenFooter(self.jsonProjectData['footer'], self.transformId(screen['id']))
-            self.createScreenHeader(screen['uncommonHeader'], self.transformId(screen['id']))
-            self.createScreenBody(screen['modules'][0], self.transformId(screen['id']))
+            os.mkdir(f"./test/modules_by_screens/{transformId(screen['id'])}")
+            self.createScreenFooter(self.jsonProjectData['footer'], transformId(screen['id']))
+            self.createScreenHeader(screen['uncommonHeader'], transformId(screen['id']))
+            self.createScreenBody(screen['modules'][0], transformId(screen['id']))
 
     def createScreenHandler(self):
         file = open('./controls_templates/screen_handler.templ', 'r')
@@ -170,9 +170,9 @@ class Builder:
         output = open('./test/controls/screen_handler.dart', 'w')
 
         for screen in self.jsonProjectData['screens']:
-            importLines.append(f"import 'package:test/screens/{self.transformId(screen['id'])}.dart';\n")
-            getLines.append("Widget get"+self.transformId(screen['id'])+"Screen(){\n")
-            getLines.append(f"return const {self.transformId(screen['id'])}();\n")
+            importLines.append(f"import 'package:test/screens/{transformId(screen['id'])}.dart';\n")
+            getLines.append("Widget get"+transformId(screen['id'])+"Screen(){\n")
+            getLines.append(f"return const {transformId(screen['id'])}();\n")
             getLines.append('}\n')
 
         #insert import lines
@@ -205,7 +205,7 @@ class Builder:
         file.close()
         output = open('./test/controls/screen_navigator.dart', 'w')
         kw = KeywordProcessor()
-        kw.add_keyword('<start_screen_id>',  '"'+self.transformId(self.jsonProjectData['screens'][0]['id'])+'"')
+        kw.add_keyword('<start_screen_id>',  '"'+transformId(self.jsonProjectData['screens'][0]['id'])+'"')
         for lineIndex in range(len(lines)):
             lines[lineIndex] = kw.replace_keywords(lines[lineIndex])
         output.writelines(lines)
@@ -219,7 +219,7 @@ class Builder:
         addScreensLines = []
 
         for screen in self.jsonProjectData['screens']:
-            addScreensLines.append(f"ScreenRootInheritedWidget.of(context).scrnNav.addScreen({self.transformId(screen['id'], bracelets=True)}, scrHand.get{self.transformId(screen['id'])}Screen);\n")
+            addScreensLines.append(f"ScreenRootInheritedWidget.of(context).scrnNav.addScreen({transformId(screen['id'], bracelets=True)}, scrHand.get{transformId(screen['id'])}Screen);\n")
 
         insertIndex = -1
         for i, line in enumerate(lines):
@@ -249,3 +249,12 @@ bui.createMainFile()
 # bod.processChildren(ButtonModule('fefwew', data['footer']['modules'][0]))
 # bod.processChildrenLines()
 # bod.writeDataToDartFile('./test/')
+
+# bod = NotScrollableWrapper('efwe', data['screens'][1]['modules'][0]['options'])
+# bod.addChild(ButtonModule('fefwew', data['screens'][1]['modules'][0]['modules'][0]))
+# bod.addChild(ButtonModule('fefwew', data['screens'][1]['modules'][0]['modules'][1]))
+# bod.addChild(ButtonModule('fefwew', data['screens'][1]['modules'][0]['modules'][2]))
+# bod.addChild(ButtonModule('fefwew', data['screens'][1]['modules'][0]['modules'][3]))
+# bod.processChildrenColumns()
+# bod.processChildrenLines()
+# bod.writeDataToDartFile('./test')

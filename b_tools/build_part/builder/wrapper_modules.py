@@ -1,14 +1,17 @@
-from .base_modules_models import *
+from base_modules_models import *
 
 class NotScrollableWrapper(BaseModuleWithChildren):
     columnsAmount:int = None
 
-    def __init__(self, moduleId: str, columnsAmount) -> None:
-        super().__init__(moduleId, 'notscrollable_wrapper')
-        self.columnsAmount = columnsAmount
+    def __init__(self, moduleId: str, jsonData) -> None:
+        super().__init__(moduleId, 'notscrollable_wrapper', jsonData)
+        self.columnsAmount = int(jsonData['gridTemplateColumns'])
 
     def addDefParams(self):
         self.moduleDefParamsMap = {}
+
+    def addCssToDartOptionsMap(self):
+        self.moduleCssToDartOptionsMap = {}
 
     def processChildrenColumns(self):
         modulesPerColumn = int(len(self.moduleChildren) / self.columnsAmount)
@@ -16,6 +19,7 @@ class NotScrollableWrapper(BaseModuleWithChildren):
         moduleMaxIndex = modulesPerColumn
 
         for _ in range(self.columnsAmount):
+            self.moduleChildrenFileLines.append('Expanded(child:\n')
             self.moduleChildrenFileLines.append('Column(\n')
             self.moduleChildrenFileLines.append('children: [\n')
 
@@ -23,6 +27,7 @@ class NotScrollableWrapper(BaseModuleWithChildren):
                 self.appendChildLines(childIndex, ',')
 
             self.moduleChildrenFileLines.append('],\n')
+            self.moduleChildrenFileLines.append('),\n')
             self.moduleChildrenFileLines.append('),\n')
 
             moduleMinIndex+=modulesPerColumn

@@ -47,6 +47,8 @@ class ButtonModule(BaseModuleModel):
             return '"'+res+'"'
 
     def clearButtonAction(self, data):
+        if data['name'] == '':
+            return ' '
         if data['name'] == 'leed_to_screen':
             return f"leedToScreen(context, {self.transformId(data['options']['screenId'], bracelets=True)});"
 
