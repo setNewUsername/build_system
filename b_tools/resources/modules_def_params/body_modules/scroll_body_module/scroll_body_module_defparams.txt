@@ -1,3 +1,0 @@
-<crossAxisCount> = 2
-<mainAxisSpacing> = 10
-<crossAxisSpacing> = 5
