@@ -1,21 +1,22 @@
 import json, os
 from flashtext.keyword import KeywordProcessor
 
-from models.screen_model import *
-from models.base_modules.base_modules_models import *
+from .models.screen_model import *
+from .models.base_modules.base_modules_models import *
 
-from modules.footer_modules import *
-from modules.button_modules import *
-from modules.header_modules import *
-from modules.body_dummie import *
-from modules.scroll_modules import *
-from modules.wrapper_modules import *
+from .modules.footer_modules import *
+from .modules.button_modules import *
+from .modules.header_modules import *
+from .modules.body_dummie import *
+from .modules.scroll_modules import *
+from .modules.wrapper_modules import *
 
-from tools.tools import *
-from tools.module_factory import *
+from .tools.tools import *
+from .tools.module_factory import *
 
 class Builder:
-    projectFilesFolderPath:str = './test'
+    projectUid:str = None
+    projectFilesFolderPath:str = None
 
     commonHeader:BaseModuleWithChildren = None
     commonFooter:BaseModuleWithChildren = None
@@ -23,27 +24,31 @@ class Builder:
     jsonProjectData:dict = None
     screensAmount:int = None
 
-    moduleFactory: ModuleFactory = ModuleFactory()
+    moduleFactory: ModuleFactory = None
 
-    def __init__(self, jsonData) -> None:
+    def __init__(self, jsonData, projectFileFolder, projectUid) -> None:
+        self.projectUid = projectUid
         self.jsonProjectData = jsonData
+        self.projectFilesFolderPath = projectFileFolder
+        self.moduleFactory = ModuleFactory(self.projectUid)
 
     #common objects
     def createCommonHeader(self):
-        self.commonHeader = HeaderModule(transformId(self.jsonProjectData['header']['id']), self.jsonProjectData['header']['options'])
+        if self.jsonProjectData['header'] != {}:
+            self.commonHeader = HeaderModule(transformId(self.jsonProjectData['header']['id']), self.jsonProjectData['header']['options'], self.projectUid)
 
-        for child in self.jsonProjectData['header']['modules']:
-            self.commonHeader.addChild(self.moduleFactory.getModuleByName(child['namePrivate'], requiredData={
-                'id': transformId(child['id']),
-                'options': child['options']
-            }))
+            for child in self.jsonProjectData['header']['modules']:
+                self.commonHeader.addChild(self.moduleFactory.getModuleByName(child['namePrivate'], requiredData={
+                    'id': transformId(child['id']),
+                    'options': child['options']
+                }))
 
-        self.commonHeader.appendChildrenLines(',')
-        self.commonHeader.processChildrenLines()
-        self.commonHeader.writeDataToDartFile('./test/commons')
+            self.commonHeader.appendChildrenLines(',')
+            self.commonHeader.processChildrenLines()
+            self.commonHeader.writeDataToDartFile(f'{self.projectFilesFolderPath}\\commons')
 
     def createCommonFooter(self):
-        self.commonFooter = FooterModule(transformId(self.jsonProjectData['footer']['id']), self.jsonProjectData['footer']['options'])
+        self.commonFooter = FooterModule(transformId(self.jsonProjectData['footer']['id']), self.jsonProjectData['footer']['options'], self.projectUid)
 
         for child in self.jsonProjectData['footer']['modules']:
             self.commonFooter.addChild(self.moduleFactory.getModuleByName(child['namePrivate'], requiredData={
@@ -53,13 +58,13 @@ class Builder:
 
         self.commonFooter.appendChildrenLines(',')
         self.commonFooter.processChildrenLines()
-        self.commonFooter.writeDataToDartFile('./test/commons')
+        self.commonFooter.writeDataToDartFile(f'{self.projectFilesFolderPath}\\commons')
     #common objects
 
     #objects by screen
     def createScreenHeader(self, headerData, screenId):
         if(headerData != {}):
-            head = HeaderModule(transformId(headerData['id']), headerData['options'])
+            head = HeaderModule(transformId(headerData['id']), headerData['options'], self.projectUid)
 
             for child in headerData['modules']:
                 head.addChild(
@@ -71,10 +76,10 @@ class Builder:
 
             head.appendChildrenLines(',')
             head.processChildrenLines()
-            head.writeDataToDartFile(f'./test/modules_by_screens/{screenId}')
+            head.writeDataToDartFile(f'{self.projectFilesFolderPath}\\modules_by_screens\\{screenId}')
 
     def createScreenFooter(self, footerData, screenId):
-        foot = FooterModule(transformId(footerData['id']), footerData['options'])
+        foot = FooterModule(transformId(footerData['id']), footerData['options'], self.projectUid)
 
         for child in footerData['modules']:
             foot.addChild(
@@ -86,7 +91,7 @@ class Builder:
 
         foot.appendChildrenLines(',')
         foot.processChildrenLines()
-        foot.writeDataToDartFile(f'./test/modules_by_screens/{screenId}')
+        foot.writeDataToDartFile(f'{self.projectFilesFolderPath}\\modules_by_screens\\{screenId}')
 
     def checkScrollable(self, bodyData:dict):
         if 'scrollable' in bodyData.keys():
@@ -102,7 +107,7 @@ class Builder:
             'options': bodyData['options']
         })
         body.processChildrenLines()
-        body.writeDataToDartFile(f'./test/modules_by_screens/{screenId}')
+        body.writeDataToDartFile(f'{self.projectFilesFolderPath}\\modules_by_screens\\{screenId}')
     #objects by screen
 
     def createScreens(self):
@@ -122,26 +127,27 @@ class Builder:
                 transformId(headerId),
                 transformId(screen['modules'][0]['id']),
                 transformId(footerId),
-                'screen')
-            scr.writeLinesToDart()
+                'screen',
+                self.projectUid)
+            scr.writeLinesToDart(self.projectFilesFolderPath)
 
     def createScreensModules(self):
         for screen in self.jsonProjectData['screens']:
-            os.mkdir(f"./test/modules_by_screens/{transformId(screen['id'])}")
+            os.mkdir(f"{self.projectFilesFolderPath}\\modules_by_screens\\{transformId(screen['id'])}")
             self.createScreenFooter(self.jsonProjectData['footer'], transformId(screen['id']))
             self.createScreenHeader(screen['uncommonHeader'], transformId(screen['id']))
             self.createScreenBody(screen['modules'][0], transformId(screen['id']))
 
     def createScreenHandler(self):
-        file = open('./controls_templates/screen_handler.templ', 'r')
+        file = open(os.path.abspath(__file__).removesuffix('\\json_builder.py')+'\\templates\\controls_templates\\screen_handler.templ', 'r')
         lines = file.readlines()
         file.close()
         importLines = []
         getLines = []
-        output = open('./test/controls/screen_handler.dart', 'w')
+        output = open(f'{self.projectFilesFolderPath}\\controls\\screen_handler.dart', 'w')
 
         for screen in self.jsonProjectData['screens']:
-            importLines.append(f"import 'package:test/screens/{transformId(screen['id'])}.dart';\n")
+            importLines.append(f"import 'package:{self.projectUid}/screens/{transformId(screen['id'])}.dart';\n")
             getLines.append("Widget get"+transformId(screen['id'])+"Screen(){\n")
             getLines.append(f"return const {transformId(screen['id'])}();\n")
             getLines.append('}\n')
@@ -171,10 +177,10 @@ class Builder:
         output.writelines(lines)
 
     def createScreenNavigator(self):
-        file = open('./controls_templates/screen_navigator.templ', 'r')
+        file = open(os.path.abspath(__file__).removesuffix('\\json_builder.py')+'\\templates\\controls_templates\\screen_navigator.templ', 'r')
         lines = file.readlines()
         file.close()
-        output = open('./test/controls/screen_navigator.dart', 'w')
+        output = open(f'{self.projectFilesFolderPath}\\controls\\screen_navigator.dart', 'w')
         kw = KeywordProcessor()
         kw.add_keyword('<start_screen_id>',  '"'+transformId(self.jsonProjectData['screens'][0]['id'])+'"')
         for lineIndex in range(len(lines)):
@@ -182,10 +188,10 @@ class Builder:
         output.writelines(lines)
 
     def createMainFile(self):
-        file = open('./common_templates/main.templ', 'r')
+        file = open(os.path.abspath(__file__).removesuffix('\\json_builder.py')+'\\templates\\common_templates\\main.templ', 'r')
         lines = file.readlines()
         file.close()
-        output = open('./main.dart', 'w')
+        output = open(f'{self.projectFilesFolderPath}\\main.dart', 'w')
 
         addScreensLines = []
 
@@ -204,29 +210,30 @@ class Builder:
 
         output.writelines(lines)
 
-file = open('./project2.json', 'r')
-data = json.load(file)
-file.close()
+if __name__ == 'json_buidler.py':
+    file = open('.\\project2.json', 'r')
+    data = json.load(file)
+    file.close()
 
-bui = Builder(data)
-bui.createCommonHeader()
-bui.createCommonFooter()
-bui.createScreens()
-bui.createScreensModules()
-bui.createScreenHandler()
-bui.createScreenNavigator()
-bui.createMainFile()
+    bui = Builder(data)
+    bui.createCommonHeader()
+    bui.createCommonFooter()
+    bui.createScreens()
+    bui.createScreensModules()
+    bui.createScreenHandler()
+    bui.createScreenNavigator()
+    bui.createMainFile()
 
-# bod = ScrollableWrapper('test_scroll', data['screens'][0]['modules'][0])
-# bod.processChildren(ButtonModule('fefwew', data['footer']['modules'][0]))
-# bod.processChildrenLines()
-# bod.writeDataToDartFile('./test/')
+    # bod = ScrollableWrapper('test_scroll', data['screens'][0]['modules'][0])
+    # bod.processChildren(ButtonModule('fefwew', data['footer']['modules'][0]))
+    # bod.processChildrenLines()
+    # bod.writeDataToDartFile('./test/')
 
-# bod = NotScrollableWrapper('efwe', data['screens'][1]['modules'][0]['options'])
-# bod.addChild(ButtonModule('fefwew', data['screens'][1]['modules'][0]['modules'][0]))
-# bod.addChild(ButtonModule('fefwew', data['screens'][1]['modules'][0]['modules'][1]))
-# bod.addChild(ButtonModule('fefwew', data['screens'][1]['modules'][0]['modules'][2]))
-# bod.addChild(ButtonModule('fefwew', data['screens'][1]['modules'][0]['modules'][3]))
-# bod.processChildrenColumns()
-# bod.processChildrenLines()
-# bod.writeDataToDartFile('./test')
+    # bod = NotScrollableWrapper('efwe', data['screens'][1]['modules'][0]['options'])
+    # bod.addChild(ButtonModule('fefwew', data['screens'][1]['modules'][0]['modules'][0]))
+    # bod.addChild(ButtonModule('fefwew', data['screens'][1]['modules'][0]['modules'][1]))
+    # bod.addChild(ButtonModule('fefwew', data['screens'][1]['modules'][0]['modules'][2]))
+    # bod.addChild(ButtonModule('fefwew', data['screens'][1]['modules'][0]['modules'][3]))
+    # bod.processChildrenColumns()
+    # bod.processChildrenLines()
+    # bod.writeDataToDartFile('./test')

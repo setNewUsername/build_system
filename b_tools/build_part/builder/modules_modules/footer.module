@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:test/commons/root_widget.dart';
+import 'package:<project_name>/commons/root_widget.dart';
 
 class <module_id> extends StatelessWidget{
   final String footerParentScreenId; 

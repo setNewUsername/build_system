@@ -1,0 +1,498 @@
+{
+  "header": {},
+  "footer": {
+    "name": "Footer2",
+    "namePrivate": "Footer",
+    "id": "18c85f92-b8e0-4b5e-b051-1111d87277ad",
+    "options": {
+      "nameModule": "Footer2",
+      "height": "60px",
+      "backgroundColor": "#ffffff",
+      "border": "1px solid black",
+      "display": "flex",
+      "justifyContent": "space-evenly",
+      "alignItems": "center",
+      "flexDirection": "row",
+      "gridTemplateColumns": "",
+      "gridColumnGap": "",
+      "gridRowGap": ""
+    },
+    "modules": [
+      {
+        "name": "button to main menu",
+        "namePrivate": "Button",
+        "id": "9d5fc7c4-0585-444b-8e94-4590f988e6eb",
+        "options": {
+          "nameModule": "button to main menu",
+          "borderRadius": "10px",
+          "height": "50px",
+          "backgroundColor": "#000000",
+          "padding": "2px",
+          "color": "#ffffff",
+          "margin": "0px",
+          "name": "M",
+          "width": "50px",
+          "fontSize": "16px",
+          "actions": {
+            "name": "leed_to_screen",
+            "options": { "screenId": "2fdfe2e0-77ae-43f8-afda-3c993d728484" }
+          }
+        }
+      },
+      {
+        "name": "button to Settings",
+        "namePrivate": "Button",
+        "id": "0f4efa04-7b16-49d9-9edc-c3faa9914053",
+        "options": {
+          "nameModule": "button to Settings",
+          "borderRadius": "5px",
+          "height": "50px",
+          "backgroundColor": "#000000",
+          "padding": "2px",
+          "color": "#fdfdfd",
+          "margin": "0px",
+          "name": "S",
+          "width": "50px",
+          "fontSize": "16px",
+          "actions": {
+            "name": "leed_to_screen",
+            "options": { "screenId": "261ef837-d6c5-415c-b960-1c4729900527" }
+          }
+        }
+      },
+      {
+        "name": "button to basket",
+        "namePrivate": "Button",
+        "id": "ccd5c731-e30c-4c94-9ad4-46462df5db71",
+        "options": {
+          "nameModule": "button to basket",
+          "borderRadius": "5px",
+          "height": "50px",
+          "backgroundColor": "#000000",
+          "padding": "2px",
+          "color": "#ffffff",
+          "margin": "0px",
+          "name": "B",
+          "width": "50px",
+          "fontSize": "16px",
+          "actions": {
+            "name": "leed_to_screen",
+            "options": { "screenId": "61575d76-ec85-4a81-9d4f-875cee900047" }
+          }
+        }
+      }
+    ],
+    "parent": 1,
+    "idScreen": ""
+  },
+  "screens": [
+    {
+      "name": "main menu",
+      "namePrivate": "newScreen",
+      "id": "2fdfe2e0-77ae-43f8-afda-3c993d728484",
+      "options": { "nameModule": "main menu" },
+      "modules": [
+        {
+          "name": "wrapper1",
+          "namePrivate": "Wrapper",
+          "id": "d23b6125-019b-4871-8fdd-bb8a989a6769",
+          "scrollable": "true",
+          "options": {
+            "color": "#000000",
+            "nameModule": "wrapper1",
+            "borderRadius": "0px",
+            "height": "100%",
+            "backgroundColor": "#ffffff",
+            "padding": "2px",
+            "margin": "0px",
+            "width": "auto",
+            "border": "",
+            "display": "grid",
+            "justifyContent": "",
+            "alignItems": "",
+            "gridTemplateColumns": "2",
+            "gridColumnGap": "10px",
+            "gridRowGap": "10px"
+          },
+          "modules": [
+            {
+              "name": "buttonfsa",
+              "namePrivate": "Button",
+              "id": "686377e8-57d1-4dfd-8bf6-48d52e19f860",
+              "options": {
+                "nameModule": "buttonfsa",
+                "borderRadius": "5px",
+                "height": "auto",
+                "backgroundColor": "#008000",
+                "padding": "2px",
+                "color": "#000000",
+                "margin": "0px",
+                "name": "",
+                "width": "auto",
+                "fontSize": "16px",
+                "actions": { "name": "", "options": { "screenId": "" } }
+              }
+            },
+            {
+              "name": "buttonfsa",
+              "namePrivate": "Button",
+              "id": "76b16897-6186-4ba1-809e-bc38c9bec39e",
+              "options": {
+                "nameModule": "buttonfsa",
+                "borderRadius": "5px",
+                "height": "auto",
+                "backgroundColor": "#008000",
+                "padding": "2px",
+                "color": "#000000",
+                "margin": "0px",
+                "name": "",
+                "width": "auto",
+                "fontSize": "16px",
+                "actions": { "name": "", "options": { "screenId": "" } }
+              }
+            },
+            {
+              "name": "buttonfsa",
+              "namePrivate": "Button",
+              "id": "1cb50078-fcb1-4684-9fb1-090bac45ab10",
+              "options": {
+                "nameModule": "buttonfsa",
+                "borderRadius": "5px",
+                "height": "auto",
+                "backgroundColor": "#008000",
+                "padding": "2px",
+                "color": "#000000",
+                "margin": "0px",
+                "name": "",
+                "width": "auto",
+                "fontSize": "16px",
+                "actions": { "name": "", "options": { "screenId": "" } }
+              }
+            },
+            {
+              "name": "buttonfsa",
+              "namePrivate": "Button",
+              "id": "fc21986c-347c-4458-a849-34f05ace3972",
+              "options": {
+                "nameModule": "buttonfsa",
+                "borderRadius": "5px",
+                "height": "auto",
+                "backgroundColor": "#008000",
+                "padding": "2px",
+                "color": "#000000",
+                "margin": "0px",
+                "name": "",
+                "width": "auto",
+                "fontSize": "16px",
+                "actions": { "name": "", "options": { "screenId": "" } }
+              }
+            },
+            {
+              "name": "buttonfsa",
+              "namePrivate": "Button",
+              "id": "6d222b01-6a22-4695-aabe-6930d29beb31",
+              "options": {
+                "nameModule": "buttonfsa",
+                "borderRadius": "5px",
+                "height": "auto",
+                "backgroundColor": "#008000",
+                "padding": "2px",
+                "color": "#000000",
+                "margin": "0px",
+                "name": "",
+                "width": "auto",
+                "fontSize": "16px",
+                "actions": { "name": "", "options": { "screenId": "" } }
+              }
+            },
+            {
+              "name": "buttonfsa",
+              "namePrivate": "Button",
+              "id": "b21f7382-6d85-4396-beca-fd696633032a",
+              "options": {
+                "nameModule": "buttonfsa",
+                "borderRadius": "5px",
+                "height": "auto",
+                "backgroundColor": "#008000",
+                "padding": "2px",
+                "color": "#000000",
+                "margin": "0px",
+                "name": "",
+                "width": "auto",
+                "fontSize": "16px",
+                "actions": { "name": "", "options": { "screenId": "" } }
+              }
+            },
+            {
+              "name": "buttonfsa",
+              "namePrivate": "Button",
+              "id": "8c138323-4a20-48e5-9dae-13f239e85366",
+              "options": {
+                "nameModule": "buttonfsa",
+                "borderRadius": "5px",
+                "height": "auto",
+                "backgroundColor": "#008000",
+                "padding": "2px",
+                "color": "#000000",
+                "margin": "0px",
+                "name": "",
+                "width": "auto",
+                "fontSize": "16px",
+                "actions": { "name": "", "options": { "screenId": "" } }
+              }
+            },
+            {
+              "name": "buttonfsa",
+              "namePrivate": "Button",
+              "id": "42994b44-26a8-418b-85c2-401fa03e17f7",
+              "options": {
+                "nameModule": "buttonfsa",
+                "borderRadius": "5px",
+                "height": "auto",
+                "backgroundColor": "#008000",
+                "padding": "2px",
+                "color": "#000000",
+                "margin": "0px",
+                "name": "",
+                "width": "auto",
+                "fontSize": "16px",
+                "actions": { "name": "", "options": { "screenId": "" } }
+              }
+            }
+          ]
+        }
+      ],
+      "uncommonHeader": {
+        "name": "header",
+        "namePrivate": "Header",
+        "id": "a94cfdcf-8f4f-452d-b88b-f4fc3c17371f",
+        "options": {
+          "nameModule": "header",
+          "height": "50px",
+          "backgroundColor": "#ffffff",
+          "display": "flex",
+          "justifyContent": "center",
+          "alignItems": "center",
+          "gridTemplateColumns": "",
+          "gridColumnGap": "",
+          "gridRowGap": ""
+        },
+        "modules": [
+          {
+            "name": "text header",
+            "namePrivate": "Text",
+            "id": "d8911f2b-f041-40f0-92d6-bb8df987bb6a",
+            "options": {
+              "nameModule": "text header",
+              "color": "#000000",
+              "name": "Main menu",
+              "fontSize": "24px"
+            }
+          }
+        ],
+        "parent": 0,
+        "idScreen": "2fdfe2e0-77ae-43f8-afda-3c993d728484"
+      },
+      "uncommonFooter": {}
+    },
+    {
+      "name": "Settings",
+      "namePrivate": "newScreen",
+      "id": "261ef837-d6c5-415c-b960-1c4729900527",
+      "modules": [
+        {
+          "name": "wrapper1",
+          "namePrivate": "Wrapper",
+          "scrollable": "false",
+          "id": "fa62a4b1-e1b3-4cc6-992d-3f6365b3db11",
+          "options": {
+            "color": "#000000",
+            "nameModule": "wrapper1",
+            "borderRadius": "0px",
+            "height": "100%",
+            "backgroundColor": "#ffffff",
+            "padding": "2px",
+            "margin": "0px",
+            "width": "auto",
+            "display": "grid",
+            "justifyContent": "",
+            "alignItems": "",
+            "gridTemplateColumns": "1",
+            "gridColumnGap": "",
+            "gridRowGap": ""
+          },
+          "modules": [
+            {
+              "name": "button1",
+              "namePrivate": "Button",
+              "id": "1f58e27b-9dc2-4ebe-aee6-88b5825842b3",
+              "options": {
+                "nameModule": "button1",
+                "borderRadius": "5px",
+                "height": "50px",
+                "backgroundColor": "#ffffff",
+                "padding": "2px",
+                "color": "#000000",
+                "margin": "0px",
+                "border": "none",
+                "name": "app theme",
+                "width": "auto",
+                "fontSize": "22px",
+                "actions": { "name": "", "options": { "screenId": "" } }
+              }
+            },
+            {
+              "name": "button1",
+              "namePrivate": "Button",
+              "id": "09529e1d-336d-46f1-8e37-5fa926ea33af",
+              "options": {
+                "nameModule": "button1",
+                "borderRadius": "5px",
+                "height": "50px",
+                "backgroundColor": "#ffffff",
+                "padding": "2px",
+                "color": "#000000",
+                "margin": "0px",
+                "border": "none",
+                "name": "notifications",
+                "width": "auto",
+                "fontSize": "22px",
+                "actions": { "name": "", "options": { "screenId": "" } }
+              }
+            },
+            {
+              "name": "text1",
+              "namePrivate": "Text",
+              "id": "2e0f66bf-68f2-4c96-8e2e-ee22d0e0f198",
+              "options": {
+                "nameModule": "text1",
+                "color": "#000000",
+                "name": "    about us: ",
+                "fontSize": "24px"
+              }
+            },
+            {
+              "name": "text2521",
+              "namePrivate": "Text",
+              "id": "343cac72-53bf-48f6-8639-a70fc0a01a21",
+              "options": {
+                "nameModule": "text2521",
+                "color": "#000000",
+                "name": "asidgoliasdh gshidg hshdg hsadghl shdgh sadhklg shlkdghlk ashlkdgh lk;asdhlkg hklsadghk lshkldg hksladghk shkldg hsklhkdl hksgadhkl gahklgwdhkl gdghlkas halkshalkg dhlksahk ls",
+                "fontSize": "20px"
+              }
+            },
+            {
+              "name": "text2521",
+              "namePrivate": "Text",
+              "id": "df29fbdb-3a76-4e3b-9857-29dd6328eadb",
+              "options": {
+                "nameModule": "text2521",
+                "color": "white",
+                "name": "assdddd dd dd dd d dddddddddddd ddddd d d d dd ",
+                "fontSize": "19px"
+              }
+            }
+          ]
+        }
+      ],
+      "options": { "nameModule": "Settings" },
+      "uncommonHeader": {
+        "name": "header",
+        "namePrivate": "Header",
+        "id": "dde726a4-66a6-4463-aeae-34f5f4a693ae",
+        "options": {
+          "nameModule": "header",
+          "height": "50px",
+          "backgroundColor": "#ffffff",
+          "border": "1px solid black",
+          "display": "flex",
+          "justifyContent": "center",
+          "alignItems": "center",
+          "gridTemplateColumns": "",
+          "gridColumnGap": "",
+          "gridRowGap": ""
+        },
+        "modules": [
+          {
+            "name": "text header",
+            "namePrivate": "Text",
+            "id": "ab00669e-ca84-4e6b-aa13-e146a54daaae",
+            "options": {
+              "nameModule": "text header",
+              "color": "#000000",
+              "name": "Settings",
+              "fontSize": "24px"
+            }
+          }
+        ],
+        "parent": 0,
+        "idScreen": "261ef837-d6c5-415c-b960-1c4729900527"
+      },
+      "uncommonFooter": {}
+    },
+    {
+      "name": "Basket",
+      "namePrivate": "newScreen",
+      "id": "61575d76-ec85-4a81-9d4f-875cee900047",
+      "modules": [
+        {
+          "name": "wrapper1",
+          "namePrivate": "Wrapper",
+          "scrollable": "true",
+          "id": "fa62a4b1-e1b3-4cc6-992d-3f6365b3db11",
+          "options": {
+            "color": "#000000",
+            "nameModule": "wrapper1",
+            "borderRadius": "0px",
+            "height": "100%",
+            "backgroundColor": "#ffffff",
+            "padding": "2px",
+            "margin": "0px",
+            "width": "auto",
+            "display": "grid",
+            "justifyContent": "",
+            "alignItems": "",
+            "gridTemplateColumns": "1",
+            "gridColumnGap": "",
+            "gridRowGap": ""
+          },
+          "modules": []
+        }
+      ],
+      "options": { "nameModule": "Basket" },
+      "uncommonHeader": {
+        "name": "header",
+        "namePrivate": "Header",
+        "id": "32cd9a85-2458-4288-9450-158ab18833ce",
+        "options": {
+          "nameModule": "header",
+          "height": "50px",
+          "backgroundColor": "#ffffff",
+          "display": "flex",
+          "justifyContent": "center",
+          "alignItems": "center",
+          "gridTemplateColumns": "",
+          "gridColumnGap": "",
+          "gridRowGap": ""
+        },
+        "modules": [
+          {
+            "name": "text header",
+            "namePrivate": "Text",
+            "id": "c2bb53e1-24b0-4f76-80e2-c469adba073e",
+            "options": {
+              "nameModule": "text header",
+              "color": "#000000",
+              "name": "Basket",
+              "fontSize": "24px"
+            }
+          }
+        ],
+        "parent": 0,
+        "idScreen": "61575d76-ec85-4a81-9d4f-875cee900047"
+      },
+      "uncommonFooter": {}
+    }
+  ]
+}

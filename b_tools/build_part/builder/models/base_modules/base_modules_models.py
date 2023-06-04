@@ -1,4 +1,5 @@
 from flashtext.keyword import KeywordProcessor
+import os, sys
 
 class BaseModuleModel:
     keywordProcessor:KeywordProcessor = None
@@ -13,12 +14,13 @@ class BaseModuleModel:
     moduleDefParamsMap:dict[str, str] = None
     moduleCssToDartOptionsMap:dict[str, str] = None
 
-    def __init__(self, moduleId:str, moduleFileName:str, jsonOptionsData:dict) -> None:
+    def __init__(self, moduleId:str, moduleFileName:str, jsonOptionsData:dict, projectUid='none') -> None:
         self.jsonModuleOptionsData = jsonOptionsData
         self.moduleFileName = moduleFileName+'.module'
         self.moduleId = moduleId
         self.keywordProcessor = KeywordProcessor()
         self.keywordProcessor.add_keyword('<module_id>', self.moduleId)
+        self.keywordProcessor.add_keyword('<project_name>', projectUid)
 
         #default clear data map
         self.moduleClearCssDataMap = {
@@ -35,12 +37,15 @@ class BaseModuleModel:
         self.replaceDefParamsWithJsonParams()
         self.placeKeyWordsToKW()
 
+    def resolveModuleFilePath(self, fileName) -> str:
+        return os.path.abspath(__file__).removesuffix("\\models\\base_modules\\base_modules_models.py") + "\\modules_modules\\"+fileName
+
     def placeKeyWordsToKW(self):
         for key in self.moduleDefParamsMap.keys():
             self.keywordProcessor.add_keyword(key, self.moduleDefParamsMap[key])
 
     def loadModuleFile(self):
-        file = open(f'./modules_modules/{self.moduleFileName}')
+        file = open(f'{self.resolveModuleFilePath(self.moduleFileName)}')
         self.moduleFileLines = file.readlines()
         file.close()
 
@@ -92,7 +97,7 @@ class BaseModuleModel:
 
     def writeDataToDartFile(self, path):
         #print(self.moduleFileLines)
-        file = open(f'{path}/{self.moduleId}.dart', 'w')
+        file = open(f'{path}\\{self.moduleId}.dart', 'w')
         for lineIndex in range(len(self.moduleFileLines)):
             self.moduleFileLines[lineIndex] = self.keywordProcessor.replace_keywords(self.moduleFileLines[lineIndex])
         file.writelines(self.moduleFileLines)
@@ -102,8 +107,8 @@ class BaseModuleWithChildren(BaseModuleModel):
     moduleChildren:list[BaseModuleModel] = None
     moduleChildrenFileLines:list = None
 
-    def __init__(self, moduleId: str, moduleFileName: str, jsonData:dict) -> None:
-        super().__init__(moduleId, moduleFileName, jsonData)
+    def __init__(self, moduleId: str, moduleFileName: str, jsonData:dict, projectUid) -> None:
+        super().__init__(moduleId, moduleFileName, jsonData, projectUid)
         self.moduleChildren = []
         self.moduleChildrenFileLines = []
 

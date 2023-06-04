@@ -1,9 +1,9 @@
-from models.base_modules.base_modules_models import *
+from builder.models.base_modules.base_modules_models import *
 from .text_modules import *
 
 class HeaderModule(BaseModuleWithChildren):
-    def __init__(self, moduleId: str, jsonOptions) -> None:
-        super().__init__(moduleId, 'header', jsonOptions)
+    def __init__(self, moduleId: str, jsonOptions, projectUid) -> None:
+        super().__init__(moduleId, 'header', jsonOptions, projectUid)
 
     def addDefParams(self):
         self.moduleDefParamsMap = {

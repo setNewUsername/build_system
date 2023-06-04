@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-import 'package:test/modules_by_screens/<screen_id>/<screen_body_id>.dart';
-import 'package:test/modules_by_screens/<screen_id>/<screen_header_id>.dart';
-import 'package:test/modules_by_screens/<screen_id>/<screen_footer_id>.dart';
+import 'package:<project_name>/modules_by_screens/<screen_id>/<screen_body_id>.dart';
+import 'package:<project_name>/modules_by_screens/<screen_id>/<screen_header_id>.dart';
+import 'package:<project_name>/modules_by_screens/<screen_id>/<screen_footer_id>.dart';
 
 class <screen_id> extends StatelessWidget{
   static String screenId = '<screen_id>';

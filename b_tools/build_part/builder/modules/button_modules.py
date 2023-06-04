@@ -1,8 +1,8 @@
-from models.base_modules.base_modules_models import *
+from builder.models.base_modules.base_modules_models import *
 
 class ButtonModule(BaseModuleModel):
-    def __init__(self, moduleId: str, jsonOptions) -> None:
-        super().__init__(moduleId, 'button_module', jsonOptions)
+    def __init__(self, moduleId: str, jsonOptions, projectUid) -> None:
+        super().__init__(moduleId, 'button_module', jsonOptions, projectUid)
 
     def addDefParams(self):
         self.moduleDefParamsMap = {

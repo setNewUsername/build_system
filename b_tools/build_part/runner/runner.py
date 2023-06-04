@@ -1,6 +1,7 @@
 import json, sys, os, psycopg2, shutil
 from psycopg2 import Error
-from builder import *
+sys.path.append('../')
+from builder.json_builder import *
 
 BUILD_SYSTEM_FULL_PATH = os.path.abspath(__file__).removesuffix('\\b_tools\\build_part\\runner\\runner.py')
 BUILD_SYSTEM_PROJECTS_DIR = 'projects'
@@ -24,6 +25,20 @@ class Runner:
 
     def createProjectDir(self):
         pass
+
+    def createProjectFromJson(self):
+        file = open('./jsonProject.json', 'r')
+        data = json.load(file)
+        file.close()
+
+        bui = Builder(data, self.currentProjectFilesFullPath, self.projectUid)
+        bui.createCommonHeader()
+        bui.createCommonFooter()
+        bui.createScreens()
+        bui.createScreensModules()
+        bui.createScreenHandler()
+        bui.createScreenNavigator()
+        bui.createMainFile()
 
     def initFlutterProject(self):
         if not self.checkProjectCreated():
@@ -61,3 +76,4 @@ class Runner:
 run = Runner('test_proj')
 run.initFlutterProject()
 run.prepProjectFolders()
+run.createProjectFromJson()

@@ -1,10 +1,10 @@
-from models.base_modules.base_modules_models import *
+from builder.models.base_modules.base_modules_models import *
 
 class NotScrollableWrapper(BaseModuleWithChildren):
     columnsAmount:int = None
 
-    def __init__(self, moduleId: str, jsonData) -> None:
-        super().__init__(moduleId, 'notscrollable_wrapper', jsonData)
+    def __init__(self, moduleId: str, jsonData, projectUid)  -> None:
+        super().__init__(moduleId, 'notscrollable_wrapper', jsonData, projectUid)
         self.columnsAmount = int(jsonData['gridTemplateColumns'])
 
     def addDefParams(self):

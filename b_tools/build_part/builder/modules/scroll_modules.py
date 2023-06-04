@@ -1,10 +1,10 @@
-from models.base_modules.base_modules_models import *
+from builder.models.base_modules.base_modules_models import *
 
 class ScrollableWrapper(BaseModuleWithChildren):
     childrenAmount:str = None
 
-    def __init__(self, moduleId: str, jsonData) -> None:
-        super().__init__(moduleId, 'scrollable_wrapper', jsonData)
+    def __init__(self, moduleId: str, jsonData, projectUid) -> None:
+        super().__init__(moduleId, 'scrollable_wrapper', jsonData, projectUid)
 
     def addDefParams(self):
         self.moduleDefParamsMap = {

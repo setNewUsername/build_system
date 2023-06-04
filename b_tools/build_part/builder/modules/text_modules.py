@@ -1,8 +1,8 @@
-from models.base_modules.base_modules_models import *
+from builder.models.base_modules.base_modules_models import *
 
 class TextModule(BaseModuleModel):
-    def __init__(self, moduleId: str, jsonData) -> None:
-        super().__init__(moduleId, 'text', jsonData)
+    def __init__(self, moduleId: str, jsonData, projectUid) -> None:
+        super().__init__(moduleId, 'text', jsonData, projectUid)
 
     def addDefParams(self):
         self.moduleDefParamsMap = {

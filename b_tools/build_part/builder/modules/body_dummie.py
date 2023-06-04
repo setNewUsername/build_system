@@ -1,8 +1,8 @@
-from models.base_modules.base_modules_models import *
+from builder.models.base_modules.base_modules_models import *
 
 class BodyDummie(BaseModuleWithChildren):
-    def __init__(self, moduleId: str, jsonOptions) -> None:
-        super().__init__(moduleId, 'body_dummie', jsonOptions)
+    def __init__(self, moduleId: str, jsonOptions, projectUid) -> None:
+        super().__init__(moduleId, 'body_dummie', jsonOptions, projectUid)
 
     def addDefParams(self):
         self.moduleDefParamsMap = {}
