@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:<project_name>/commons/module_base.dart';
 
-class <module_id> extends StatelessWidget{
-  const <module_id>({super.key});
+class <module_id> extends StatelessWidget with ModuleBase{
+  final String moduleParentScreenId; 
+
+  const <module_id>({super.key, required this.moduleParentScreenId});
 
   @override
   Widget build(BuildContext context){

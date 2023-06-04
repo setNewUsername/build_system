@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 
 class <module_id> extends StatelessWidget{
-  const <module_id>({super.key});
+  final String moduleParentScreenId; 
+
+  const <module_id>({super.key, required this.moduleParentScreenId});
 
   @override
   Widget build(BuildContext context){

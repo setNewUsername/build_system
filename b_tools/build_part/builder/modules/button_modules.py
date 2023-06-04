@@ -1,4 +1,4 @@
-from builder.models.base_modules.base_modules_models import *
+from b_tools.build_part.builder.models.base_modules.base_modules_models import *
 
 class ButtonModule(BaseModuleModel):
     def __init__(self, moduleId: str, jsonOptions, projectUid) -> None:
@@ -50,7 +50,7 @@ class ButtonModule(BaseModuleModel):
         if data['name'] == '':
             return ' '
         if data['name'] == 'leed_to_screen':
-            return f"leedToScreen(context, {self.transformId(data['options']['screenId'], bracelets=True)});"
+            return f"leedToScreen(context, moduleParentScreenId, {self.transformId(data['options']['screenId'], bracelets=True)});"
 
     def addCssClearDataMap(self):
         self.moduleClearCssDataMap['name'] = self.clearCssName

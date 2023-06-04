@@ -1,16 +1,17 @@
 import json, sys, os, argparse, requests, threading
+sys.path.append('..\\..\\..\\')
 #command_reciever path
-sys.path.append(f'{os.path.dirname(os.path.abspath(__file__))}\..\\')
+#sys.path.append(f'{os.path.dirname(os.path.abspath(__file__))}\..\\')
 #b_tools path
-sys.path.append(f'{os.path.dirname(os.path.abspath(__file__))}\..\..\..\\')
+#sys.path.append(f'{os.path.dirname(os.path.abspath(__file__))}\..\..\..\\')
 #builder path
-sys.path.append(f'{os.path.dirname(os.path.abspath(__file__))}\..\..\\builder\\')
+#sys.path.append(f'{os.path.dirname(os.path.abspath(__file__))}\..\..\\builder\\')
 #runner path
-sys.path.append(f'{os.path.dirname(os.path.abspath(__file__))}\..\..\\runner\\')
+#sys.path.append(f'{os.path.dirname(os.path.abspath(__file__))}\..\..\\runner\\')
 
-from common.command_reciever import command_reciever as CR
-from b_tools.builder.commons import *
-from b_tools.runner.runner import start
+from b_tools.controll_part.common.command_reciever import command_reciever as CR
+from b_tools.build_part.builder.json_builder import *
+from b_tools.build_part.runner.runner import start
 from purpose_handlers import *
 
 #add call commands
@@ -52,6 +53,7 @@ class BuildMachine:
                 'build_host_port': bMachine.machinePort
             }
         })
+        print(jsonData)
         self.machineId = jsonData['message_data']['machine_id']
         print(f'Got response from coordinator; machine id: {self.machineId}')
 

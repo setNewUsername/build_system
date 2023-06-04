@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:<project_name>/commons/module_base.dart';
 
-class <module_id> extends StatelessWidget implements PreferredSizeWidget{
-  const <module_id>({super.key});
+class <module_id> extends StatelessWidget with ModuleBase implements PreferredSizeWidget{
+  final String moduleParentScreenId; 
+
+  const <module_id>({super.key, required this.moduleParentScreenId});
 
   @override 
   final Size preferredSize = const Size.fromHeight(<header_height>); 
@@ -9,8 +12,13 @@ class <module_id> extends StatelessWidget implements PreferredSizeWidget{
   @override
   Widget build(BuildContext context){
     return AppBar(
-      title:
-      <children_lines>
+      automaticallyImplyLeading: false,
+      title:Row(
+        mainAxisAlignment: <children_spacing>,
+        children: [
+            <children_lines>
+        ],
+      ),
       backgroundColor: Color(<backgroud_header_color>),
       foregroundColor: Color(<header_text_color>)
     ); 

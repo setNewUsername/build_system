@@ -1,4 +1,4 @@
-from builder.models.base_modules.base_modules_models import *
+from b_tools.build_part.builder.models.base_modules.base_modules_models import *
 from .text_modules import *
 
 class HeaderModule(BaseModuleWithChildren):
@@ -10,6 +10,7 @@ class HeaderModule(BaseModuleWithChildren):
             '<backgroud_header_color>': '0xffffffff',
             '<header_text_color>': '0xff000000',
             '<header_height>': '60.0',
+            '<children_spacing>': 'MainAxisAlignment.spaceEvenly'
         }
 
     def addCssToDartOptionsMap(self):

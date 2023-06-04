@@ -1,0 +1,16 @@
+import 'package:flutter/material.dart';
+import 'package:<project_name>/commons/root_widget.dart';
+
+class ModuleBase{
+  void leedToScreen(context, currentScrId, leedScrId){
+    if(currentScrId != leedScrId){
+        Widget? newScr = ScreenRootInheritedWidget.of(context).scrnNav.getScreen(leedScrId);
+        if(newScr != null){
+          Navigator.push(
+            context,
+          MaterialPageRoute(builder: (context) => newScr),
+        );
+      }
+    }
+  }
+}

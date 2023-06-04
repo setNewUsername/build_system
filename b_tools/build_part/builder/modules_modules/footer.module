@@ -1,22 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:<project_name>/commons/module_base.dart';
 import 'package:<project_name>/commons/root_widget.dart';
 
-class <module_id> extends StatelessWidget{
-  final String footerParentScreenId; 
+class <module_id> extends StatelessWidget with ModuleBase{
+  final String moduleParentScreenId; 
 
-  const <module_id>({super.key, required this.footerParentScreenId});
-
-  void leedToScreen(context, scrId){
-    if(footerParentScreenId != scrId){
-        Widget? newScr = ScreenRootInheritedWidget.of(context).scrnNav.getScreen(scrId);
-        if(newScr != null){
-          Navigator.push(
-            context,
-          MaterialPageRoute(builder: (context) => newScr),
-        );
-      }
-    }
-  }
+  const <module_id>({super.key, required this.moduleParentScreenId});
 
   @override
   Widget build(BuildContext context){

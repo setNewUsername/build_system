@@ -1,0 +1,10 @@
+Container(
+    height: MediaQuery.of(context).size.height,
+    width: MediaQuery.of(context).size.width,
+    child: Flex(
+        direction: Axis.horizontal,
+        children: [
+            <children_lines>
+        ],
+    ),
+)

@@ -82,19 +82,20 @@ class Builder:
             head.writeDataToDartFile(f'{self.projectFilesFolderPath}\\modules_by_screens\\{screenId}')
 
     def createScreenFooter(self, footerData, screenId):
-        foot = FooterModule(transformId(footerData['id']), footerData['options'], self.projectUid)
+        if(footerData != {}):
+            foot = FooterModule(transformId(footerData['id']), footerData['options'], self.projectUid)
 
-        for child in footerData['modules']:
-            foot.addChild(
-                self.moduleFactory.getModuleByName(child['namePrivate'], requiredData={
-                    'id': transformId(child['id']),
-                    'options': child['options']
-                })
-            )
+            for child in footerData['modules']:
+                foot.addChild(
+                    self.moduleFactory.getModuleByName(child['namePrivate'], requiredData={
+                        'id': transformId(child['id']),
+                        'options': child['options']
+                    })
+                )
 
-        foot.appendChildrenLines(',')
-        foot.processChildrenLines()
-        foot.writeDataToDartFile(f'{self.projectFilesFolderPath}\\modules_by_screens\\{screenId}')
+            foot.appendChildrenLines(',')
+            foot.processChildrenLines()
+            foot.writeDataToDartFile(f'{self.projectFilesFolderPath}\\modules_by_screens\\{screenId}')
 
     def checkScrollable(self, bodyData:dict):
         if 'scrollable' in bodyData.keys():
@@ -131,13 +132,16 @@ class Builder:
                 transformId(screen['modules'][0]['id']),
                 transformId(footerId),
                 'screen',
-                self.projectUid)
+                self.projectUid,
+                uncommonHeaderDir='commons' if screen['uncommonHeader'] == {} else None,
+                uncommonFooterDir='commons' if screen['uncommonFooter'] == {} else None
+                )
             scr.writeLinesToDart(self.projectFilesFolderPath)
 
     def createScreensModules(self):
         for screen in self.jsonProjectData['screens']:
             os.mkdir(f"{self.projectFilesFolderPath}\\modules_by_screens\\{transformId(screen['id'])}")
-            self.createScreenFooter(self.jsonProjectData['footer'], transformId(screen['id']))
+            self.createScreenFooter(screen['uncommonFooter'], transformId(screen['id']))
             self.createScreenHeader(screen['uncommonHeader'], transformId(screen['id']))
             self.createScreenBody(screen['modules'][0], transformId(screen['id']))
 
@@ -219,6 +223,17 @@ class Builder:
         lines = file.readlines()
         file.close()
         output = open(f'{self.projectFilesFolderPath}\\commons\\root_widget.dart', 'w')
+
+        for lineIndex in range(len(lines)):
+            lines[lineIndex] = self.keyWordProc.replace_keywords(lines[lineIndex])
+
+        output.writelines(lines)
+
+    def createBaseModuleFile(self):
+        file = open(os.path.abspath(__file__).removesuffix('\\json_builder.py')+'\\templates\\common_templates\\module_base.templ', 'r')
+        lines = file.readlines()
+        file.close()
+        output = open(f'{self.projectFilesFolderPath}\\commons\\module_base.dart', 'w')
 
         for lineIndex in range(len(lines)):
             lines[lineIndex] = self.keyWordProc.replace_keywords(lines[lineIndex])

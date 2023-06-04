@@ -1,4 +1,4 @@
-from builder.models.base_modules.base_modules_models import *
+from b_tools.build_part.builder.models.base_modules.base_modules_models import *
 
 class BodyDummie(BaseModuleWithChildren):
     def __init__(self, moduleId: str, jsonOptions, projectUid) -> None:

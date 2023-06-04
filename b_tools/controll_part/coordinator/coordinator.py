@@ -1,7 +1,7 @@
 import sys, os, argparse, uuid, requests, json, threading
-sys.path.append(f'{os.path.dirname(os.path.abspath(__file__))}\..\\')
+sys.path.append('..\\..\\..\\')
 
-from common.command_reciever import command_reciever as CR
+from b_tools.controll_part.common.command_reciever import command_reciever as CR
 from build_machine_model import BuildMachine
 from queue import Queue
 from purpose_handlers import *
@@ -118,7 +118,7 @@ unRegisterPHandler = UnRegisterMachinePurpose(['machine_id'], coordinator.remove
 buildFinPHandler = BuildFinishedPurpose(['machine_id'], coordinator.buildFinished)
 #purpose hanclders setup
 
-reqVal = CR.RequestValidator(['192.168.0.107', '192.168.0.104'], purposeHandlers=[startPHandler, removePHandler, registerPHandler, unRegisterPHandler, buildFinPHandler])
+reqVal = CR.RequestValidator(['192.168.0.107', '192.168.0.104', '127.0.0.1', '26.56.69.74', '26.207.48.129', '192.168.0.108'], purposeHandlers=[startPHandler, removePHandler, registerPHandler, unRegisterPHandler, buildFinPHandler])
 
 resHad = CR.ResponseHandler(reqVal)
 
