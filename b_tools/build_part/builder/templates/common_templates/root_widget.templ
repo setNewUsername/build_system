@@ -1,0 +1,22 @@
+import 'package:flutter/material.dart';
+import 'package:<project_name>/controls/screen_navigator.dart';
+
+class ScreenRootInheritedWidget extends InheritedWidget{
+
+  ScreenNavigator scrnNav;
+
+  ScreenRootInheritedWidget({
+    super.key,
+    required super.child,
+    required this.scrnNav
+  });
+
+  static ScreenRootInheritedWidget of(BuildContext context){
+    final ScreenRootInheritedWidget? result = context.dependOnInheritedWidgetOfExactType<ScreenRootInheritedWidget>();
+    assert(result != null, 'No ScreenRootInheritedWidget found in context');
+    return result!;
+  }
+
+  @override
+  bool updateShouldNotify(ScreenRootInheritedWidget oldWidget) => true;
+}

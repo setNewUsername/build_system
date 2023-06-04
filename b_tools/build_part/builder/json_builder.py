@@ -26,11 +26,14 @@ class Builder:
 
     moduleFactory: ModuleFactory = None
 
+    keyWordProc: KeywordProcessor = KeywordProcessor()
+
     def __init__(self, jsonData, projectFileFolder, projectUid) -> None:
         self.projectUid = projectUid
         self.jsonProjectData = jsonData
         self.projectFilesFolderPath = projectFileFolder
         self.moduleFactory = ModuleFactory(self.projectUid)
+        self.keyWordProc.add_keyword('<project_name>', self.projectUid)
 
     #common objects
     def createCommonHeader(self):
@@ -181,10 +184,9 @@ class Builder:
         lines = file.readlines()
         file.close()
         output = open(f'{self.projectFilesFolderPath}\\controls\\screen_navigator.dart', 'w')
-        kw = KeywordProcessor()
-        kw.add_keyword('<start_screen_id>',  '"'+transformId(self.jsonProjectData['screens'][0]['id'])+'"')
+        self.keyWordProc.add_keyword('<start_screen_id>',  '"'+transformId(self.jsonProjectData['screens'][0]['id'])+'"')
         for lineIndex in range(len(lines)):
-            lines[lineIndex] = kw.replace_keywords(lines[lineIndex])
+            lines[lineIndex] = self.keyWordProc.replace_keywords(lines[lineIndex])
         output.writelines(lines)
 
     def createMainFile(self):
@@ -192,7 +194,6 @@ class Builder:
         lines = file.readlines()
         file.close()
         output = open(f'{self.projectFilesFolderPath}\\main.dart', 'w')
-
         addScreensLines = []
 
         for screen in self.jsonProjectData['screens']:
@@ -207,6 +208,20 @@ class Builder:
         if insertIndex != -1:
             for lineIndex in range(len(addScreensLines)-1, -1, -1):
                 lines.insert(insertIndex, addScreensLines[lineIndex])
+
+        for lineIndex in range(len(lines)):
+            lines[lineIndex] = self.keyWordProc.replace_keywords(lines[lineIndex])
+
+        output.writelines(lines)
+
+    def createRootWidget(self):
+        file = open(os.path.abspath(__file__).removesuffix('\\json_builder.py')+'\\templates\\common_templates\\root_widget.templ', 'r')
+        lines = file.readlines()
+        file.close()
+        output = open(f'{self.projectFilesFolderPath}\\commons\\root_widget.dart', 'w')
+
+        for lineIndex in range(len(lines)):
+            lines[lineIndex] = self.keyWordProc.replace_keywords(lines[lineIndex])
 
         output.writelines(lines)
 

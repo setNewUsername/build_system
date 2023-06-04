@@ -39,6 +39,7 @@ class Runner:
         bui.createScreenHandler()
         bui.createScreenNavigator()
         bui.createMainFile()
+        bui.createRootWidget()
 
     def initFlutterProject(self):
         if not self.checkProjectCreated():
