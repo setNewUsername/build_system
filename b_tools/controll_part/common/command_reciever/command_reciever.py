@@ -55,6 +55,9 @@ class CustomHTTPServer(HTTPServer):
         self.serverForeverFunc()
         return super().serve_forever(poll_interval)
 
+    def server_command_close(self) -> None:
+        return super().server_close()
+
     def server_close(self) -> None:
         self.serverCloseFunc()
         return super().server_close()

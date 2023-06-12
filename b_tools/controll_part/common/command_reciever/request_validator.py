@@ -5,7 +5,7 @@ class RequestValidator:
     requesIpWhiteList:list = None
     purposeList:list = None
 
-    def __init__(self, reqIpWhiteList, purposeHandlers:list[BasePurposeHandler] = None) -> None:
+    def __init__(self, reqIpWhiteList=None, purposeHandlers:list[BasePurposeHandler] = None) -> None:
         self.purposeHandlers = purposeHandlers
         self.requesIpWhiteList = reqIpWhiteList
         self.purposeList = []
@@ -16,6 +16,8 @@ class RequestValidator:
             self.purposeList.append(handler.purposeName)
 
     def validateIp(self, ip) -> int:
+        if self.requesIpWhiteList == None:
+            return 1
         if not ip in self.requesIpWhiteList:
             return 104
         return 1

@@ -108,6 +108,15 @@ class Coordinator:
                                     }
                                 }))
 
+    def shutdownAllBuildHosts(self):
+        for machineKey in self.buildMachines:
+            self.sendMessageToBuildMachine(machineKey,{
+                    'purpose': 'shutdown_buildmachine',
+                        'purpose_data':{
+                            'machine_id': machineKey
+                    }
+                })
+
 coordinator = Coordinator(namespace.serverip, namespace.serverport)
 
 #purpose handlers setup
@@ -118,7 +127,7 @@ unRegisterPHandler = UnRegisterMachinePurpose(['machine_id'], coordinator.remove
 buildFinPHandler = BuildFinishedPurpose(['machine_id'], coordinator.buildFinished)
 #purpose hanclders setup
 
-reqVal = CR.RequestValidator(['192.168.0.107', '192.168.0.104', '127.0.0.1', '26.56.69.74', '26.207.48.129', '192.168.0.108'], purposeHandlers=[startPHandler, removePHandler, registerPHandler, unRegisterPHandler, buildFinPHandler])
+reqVal = CR.RequestValidator(None, purposeHandlers=[startPHandler, removePHandler, registerPHandler, unRegisterPHandler, buildFinPHandler])
 
 resHad = CR.ResponseHandler(reqVal)
 
@@ -127,6 +136,7 @@ def startServerFunc():
     coordinator.startProjectsLoop()
 
 def closeServerFunc():
+    coordinator.shutdownAllBuildHosts()
     coordinator.stopProjectLoop()
     print(f'Coordinator server stopped')
 

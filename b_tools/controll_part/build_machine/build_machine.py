@@ -62,11 +62,13 @@ class BuildMachine:
 
     def unregisterMachine(self, data):
         if self.machineId != None:
+            tmp = self.machineId
+            self.machineId = None
             try:
                 self.sendRequestToCoordinator({
                     'purpose': 'unregister_machine',
                     'purpose_data':{
-                        'machine_id': f'{self.machineId}',
+                        'machine_id': f'{tmp}',
                     }
                 })
             except:
