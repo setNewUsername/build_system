@@ -1,5 +1,5 @@
-from request_validator import RequestValidator 
-from err_succ_handlers import ErrorHandler, SuccessHandler, errHandler, succHandler
+from .request_validator import RequestValidator 
+from .err_succ_handlers import ErrorHandler, SuccessHandler, errHandler, succHandler
 
 
 '''

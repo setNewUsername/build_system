@@ -1,10 +1,10 @@
 import json, sys, os
-sys.path.append(f'{os.path.dirname(os.path.abspath(__file__))}\\')
+sys.path.append('..\\..\\..\\')
 
 from http.server import BaseHTTPRequestHandler
 from http.server import HTTPServer
-from response_handler import *
-from base_purpose_handler import BasePurposeHandler
+from .response_handler import *
+from .base_purpose_handler import BasePurposeHandler
 
 class CustomRequestHandler(BaseHTTPRequestHandler):
     responseHandler:ResponseHandler = None

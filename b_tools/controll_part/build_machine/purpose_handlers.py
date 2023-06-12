@@ -1,7 +1,7 @@
 import sys, os
-sys.path.append(f'{os.path.dirname(os.path.abspath(__file__))}\..\\')
+sys.path.append('..\\..\\..\\')
 
-from common.command_reciever import command_reciever as CR
+from b_tools.controll_part.common.command_reciever import command_reciever as CR
 
 class StartBuildPurpose(CR.BasePurposeHandler):
     addProjectToQueueFunc = None

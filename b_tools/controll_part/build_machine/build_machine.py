@@ -1,13 +1,5 @@
 import json, sys, os, argparse, requests, threading
 sys.path.append('..\\..\\..\\')
-#command_reciever path
-#sys.path.append(f'{os.path.dirname(os.path.abspath(__file__))}\..\\')
-#b_tools path
-#sys.path.append(f'{os.path.dirname(os.path.abspath(__file__))}\..\..\..\\')
-#builder path
-#sys.path.append(f'{os.path.dirname(os.path.abspath(__file__))}\..\..\\builder\\')
-#runner path
-#sys.path.append(f'{os.path.dirname(os.path.abspath(__file__))}\..\..\\runner\\')
 
 from b_tools.controll_part.common.command_reciever import command_reciever as CR
 from b_tools.build_part.builder.json_builder import *
@@ -76,7 +68,10 @@ class BuildMachine:
 
     def startBuildThread(self, projectId):
         #start function is in runner.py file
-        buildSuccess = start(projectId)
+        try:
+            buildSuccess = start(projectId)
+        except Exception as ex:
+            print('Error while build: ', ex)
         print('Build finished')
         buildSuccess = True
         self.machineIsFree = True

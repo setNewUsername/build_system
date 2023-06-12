@@ -1,4 +1,4 @@
-from base_purpose_handler import BasePurposeHandler
+from .base_purpose_handler import BasePurposeHandler
 
 class RequestValidator:
     purposeHandlers:list[BasePurposeHandler] = None
